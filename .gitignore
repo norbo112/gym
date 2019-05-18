@@ -91,6 +91,8 @@ Generated\ Files/
 *.VisualState.xml
 TestResult.xml
 
+/.tmp.drivedownload/
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
