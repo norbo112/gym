@@ -9,6 +9,7 @@ function Naplo(mentesidatum, gyaksik) {
 $(document).ready(function() {
 
     rogz_gyak_megjelenito();
+    //teszteljük a gitet
 
     if (logintEllenoriz()) {
         adatInit("#dinSelect", "kapcs=5");
