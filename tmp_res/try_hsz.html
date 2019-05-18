@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test doksi</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .gyak {
+            color: black;
+            background-color: inherit;
+            animation: tortent;
+            animation-duration: 3s;
+            animation-iteration-count: 2;
+        }
+        
+        @keyframes tortent {
+            50% {
+                background-color: aqua;
+            }
+        }
+        
+        .hszmegjelenito {
+            margin-top: 10px;
+            width: auto;
+            background-color: rgb(248, 208, 156);
+            padding: 15px;
+            /*display: none;*/
+            border-radius: 10px;
+            box-shadow: 10px 7px 10px rgb(148, 117, 77);
+            z-index: 1;
+            margin-bottom: 15px;
+        }
+        
+        blockquote {
+            background-color: cornsilk;
+            box-shadow: 2px 5px 10px 2px rgb(148, 117, 77);
+        }
+    </style>
+
+    <script>
+        $(function() {
+            $("#capthaForm").submit(function(e) {
+                e.preventDefault();
+                checkKepEredmeny();
+                return false;
+            });
+
+            $("#capimg").click(function(e) {
+                e.preventDefault();
+                $("#capimg").removeAttr("src").attr("src", "");
+                $("#capimg").attr("src", "nwctest.php" + "?dummy=" + Math.floor(Math.random() * 1000));
+                $("#subgomb").removeAttr("disabled");
+                return false;
+            });
+
+            function checkKepEredmeny() {
+                $.ajax({
+                    type: "POST",
+                    url: "valid_captcha.php",
+                    data: {
+                        captcha: $("#bevitel").val()
+                    },
+                    dataType: "text",
+                    success: function(response) {
+                        var res = JSON.parse(response);
+
+                        if (res.success) {
+                            $("#result").text("Sikeres, egyezés!");
+                            $("#subgomb").attr("disabled", "disabled");
+                        } else if (res.faild) {
+                            $("#result").text(res.faild);
+                        }
+
+                        $("#result").toggleClass("gyak");
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Test Dokumentum</h1>
+            <p>Kellene javítani a hírek megjelenésén</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1>Tesztelendő</h1>
+
+                <div class="hszmegjelenito" id="hszmegjelenito_">
+                    <blockquote>
+                        <p>Nagyon király lett, köszi!!</p>
+                        <footer>test@test.com <i>2018-07-31 00:36:36</i></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1>Tesztelendő</h1>
+
+                <div class="hszmegjelenito" id="hszmegjelenito_">
+                    <blockquote>
+                        <h2>Bejelentkezés ill. regisztráció</h2>
+                        <div class="media">
+                            <a class="pull-left" href="#">
+                                <img class="media-object img-thumbnail" src="nwctest.php" alt="Image" id="capimg">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">A képre kattinva újratöltheted a feladványt</h4>
+
+                                <form id="capthaForm" action="javascript:void(0)" method="POST" role="form">
+                                    <div class="form-group">
+                                        <label for="bevitel">Mi van a képen?</label>
+                                        <input pattern="[0-9]{1,}" title="Négy számjegyből állhat" type="text" style="width: 30%;" class="form-control" name="bevitel" id="bevitel" placeholder="Input field">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" id="subgomb">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                        <p id="result"></p>
+
+
+                        <footer>test@test.com <i>2018-07-31 00:36:36</i></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

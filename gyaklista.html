@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <title>Edzésnapló V2</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="mystyle.css">
+
+    <script src="HttpClient.js"></script>
+    <script src="gyaklista3.js"></script>
+    <script src="naplo.js"></script>
+    <script src="user.js"></script>
+    <script src="ccc.js"></script>
+
+    <style>
+        .test+.tooltip>.tooltip-inner {
+            background-color: rgb(153, 227, 245);
+            color: rgb(0, 0, 0);
+            border: 1px solid green;
+            padding: 15px;
+            font-size: 20px;
+        }
+        
+        #mydiagram {
+            border: 1px solid darkgreen;
+            width: 80%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse visible-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li class="active"><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad1"><progress id="myProgress1"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo2" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot1"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li class="active"><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad2"><progress id="myProgress2"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo1" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot2"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <span id="top"></span>
+    <div class="container hirek" style="margin-top: 60px">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 id="login2Udv">Edzésnapló</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Korábbi naplók kezelése</h3>
+                <p>
+                    Itt lesz néhány funkció, amivel lehet szűrni a táblát és egyébb érdekes összehasonlításokat lehet majd elvégezni. űPéldául két napi edzésben megmozgatott súly mennyiségének összehasonlítása.
+                </p>
+                <p>Ugrás az <a href="#osszesito">Összesítőre</a>, ahol kitudod választani azt a gyakorlatot aminek szeretnéd megnézni a napi eredményét.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center hirek" id="korabbinaplok">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Elmentett Edzésnaplók</h2>
+                <!-- <span id=""></span>-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <h3>Napló szűrő</h3>
+                <div class="form-group">
+                    <label for="kereso">Kereső</label>
+                    <input type="search" class="form-control" id="kereso" placeholder="Keresett szöveg">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="keresoNapilista">Napi kereső</label>
+                    <input type="search" class="form-control" id="napikereso" placeholder="Keresés...">
+                </div>
+                <span id="rogzitettNaplok"></span>
+                <span id="exportGomb"></span>
+            </div>
+            <div class="col-md-10 text-left" id="korabbi_gyak_lista_reszletezo"></div>
+        </div>
+    </div>
+
+    <span id="osszesito"></span>
+    <div class="container text-center hirek">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h3>Diagram - Összesítő</h3>
+                <p>Napra levetitett gyakorlatok által megmozgatott súly össszege</p>
+                <p>Kérlek jelentkezz be az összesítő használatához</p>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <h3>Gyakorlat választó</h3>
+                <!-- <p>Majd válasz partnert, ha szeretnéd összehasonlítani a gyakorlatodat vele.</p>-->
+                <div id="dinSelect"></div>
+                <!-- <h3>Partner</h3>
+                <div id="dinSelectPartner"></div>
+                -->
+                <br>
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                <h3>Diagram</h3>
+                <h4 class="text-left" id="kivalasztottGyaksi">Válassz gyakorlatot</h4>
+                <br>
+                <div id="mydiagram"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- info modal -->
+    <div class="modal fade" id="delinfomodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Információ</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 id="delinfomodalinfo"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid" id="footercontent">
+    </footer>
+
+</body>
+
+</html>

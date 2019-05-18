@@ -1,0 +1,57 @@
+.tap_header {
+    background-color: rgb(206, 206, 206);
+    font-size: 14pt;
+    font-weight: bold;
+    padding-right: 16px;
+}
+
+.tap_header span {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    display: inline-block;
+    width: 12%;
+}
+
+.tap_adat {
+    background-color: rgba(221, 221, 221, 0.575);
+    height: 350px;
+    overflow-y: scroll;
+    font-size: 14pt;
+}
+
+.tap_adat span {
+    padding-left: 2px;
+    padding-right: 2px;
+    display: inline-block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 12%;
+}
+
+span.tapnev {
+    width: 16%;
+}
+
+button.btn-sort {
+    text-align: center;
+    background-color: gainsboro;
+}
+
+#etrend {
+    background-color: black;
+}
+
+#etrend table {
+    background-color: silver;
+    border: 1px solid rgb(2, 206, 2);
+}
+
+#etrend .tap_adat {
+    background-color: aliceblue;
+}
+
+#dbEtrendek,
+#dbEtrendekNezo {
+    height: 250px;
+    overflow-y: scroll;
+}

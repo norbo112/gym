@@ -1,0 +1,405 @@
+body {
+    /*background-color: bisque;*/
+    background-image: url(imgs/wallh.png);
+    background-size: 79%;
+    background-color: black;
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    background-position-y: 150px;
+}
+
+.container-fluid [class^=col-] {
+    color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*border: 1px solid #3c01b4;*/
+}
+
+.container {
+    margin-bottom: 10px;
+}
+
+footer.container-fluid {
+    /*background-color: rgb(141, 78, 0);*/
+    background-color: black;
+    color: white;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+
+footer .hirek {
+    height: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    border-top: 0pc;
+    border-bottom: 0px;
+    padding: 30px;
+}
+
+footer hr {
+    border-color: black;
+}
+
+.mylistfooter a,
+.mylistfooter li {
+    /*background-color: rgb(141, 78, 0);*/
+    border: none;
+}
+
+
+/*.mylistfooter textarea,
+.mylistfooter input[type=email] {
+    background-color: rgb(141, 78, 0);
+}*/
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+#login {
+    display: none;
+    color: white;
+}
+
+.hibaVisszajelzes {
+    display: none;
+    color: red;
+}
+
+.hibaOsztaly {
+    background-color: #ffcacb;
+}
+
+#gyak_add {
+    display: none;
+}
+
+#statusLoad1,
+#statusLoad2 {
+    display: none;
+    color: white;
+    font-weight: bold;
+}
+
+.modal-content {
+    background-color: wheat;
+}
+
+.jumbotron {
+    padding-left: 20px;
+    padding-bottom: 20px;
+    margin: 0px;
+    opacity: 0.8;
+}
+
+button.btn-stopper {
+    background-color: rgb(252, 212, 159);
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 1.9em;
+    font-weight: bold;
+}
+
+#hirekAdd {
+    background-color: lightgray;
+    border: 5px solid bisque;
+    border-radius: 15px;
+}
+
+.hirek {
+    padding-top: 20px;
+    border-radius: 15px;
+    background-color: rgb(238, 238, 238);
+    border: 5px solid bisque;
+}
+
+.fhirek {
+    padding-top: 20px;
+    border-radius: 15px;
+    background-color: rgb(104, 104, 104);
+    border: 2px solid bisque;
+}
+
+.fhirek h4,
+.fhirek .form-group label {
+    color: white;
+}
+
+.sajatRadio {
+    width: 20%;
+    margin-left: 18px;
+    background-color: white;
+    border: 1px solid rgb(234, 236, 236);
+}
+
+
+/**
+ * Az alábbi három bejegyzés a gyakorlatnező oldalhoz
+ **/
+
+.gyaknezorow {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px 4px inset #ecc350;
+}
+
+.gyaknezorow [class^=col-] {
+    color: white;
+}
+
+.container-fluid .gyaknezorow {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.listahead {
+    background-color: white;
+    color: black;
+    margin-bottom: 0px;
+    padding: 3px;
+    border-bottom: 2px solid lightgreen;
+}
+
+#gyakvalaszto {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+
+#gyakvalaszto .lgt2 {
+    height: 350px;
+    /*padding-right: 10px;*/
+    overflow-y: scroll;
+    box-sizing: content-box;
+}
+
+#player {
+    background-color: black;
+    padding: 20px;
+    /*border: 2px solid #8f9450;
+    border-radius: 30px;
+    box-shadow: 5px 5px 2px 2px #eeff00;*/
+}
+
+a.vanlink {
+    color: red;
+}
+
+
+/*felhasználói oldalon*/
+
+.useradatbadge {
+    background-color: rgb(248, 230, 69);
+    color: black;
+    font-size: 1em;
+    padding: 2px;
+    margin: 0px;
+    box-shadow: 2px 2px 3px 3px rgb(247, 199, 68);
+    float: right;
+    z-index: 9998;
+    width: 50%;
+}
+
+.useradatbadge:hover {
+    background-color: aquamarine;
+    cursor: pointer;
+}
+
+#felh_adatok_lista li {
+    padding-bottom: 25px;
+}
+
+
+/*EGy kis animáció az üzenetek jelzésére*/
+
+.uzenetJelzo {
+    /*background-color: aqua;*/
+    animation-name: sajat;
+    animation-duration: 4s;
+    animation-iteration-count: 5;
+}
+
+@keyframes sajat {
+    0% {
+        background-color: aqua;
+    }
+    25% {
+        background-color: yellow;
+    }
+    50% {
+        background-color: rgb(136, 255, 0);
+    }
+    75% {
+        background-color: yellow;
+    }
+    100% {
+        background-color: aqua;
+    }
+}
+
+.megj {
+    background-color: rgb(215, 228, 228);
+    border: 1px solid rgb(215, 248, 248);
+    box-shadow: 2px 5px 10px 2px rgba(148, 117, 77, 0.514);
+    width: auto;
+}
+
+#napikeresendo {
+    height: 200px;
+    overflow: auto;
+}
+
+#lebegoStopper {
+    padding: 2px;
+    display: block;
+    position: fixed;
+    top: 80px;
+    left: 30px;
+    width: auto;
+    height: auto;
+    z-index: 1;
+}
+
+.stopperanimclass {
+    animation: stopperanim;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes stopperanim {
+    0% {
+        background-color: rgb(255, 0, 0);
+        color: white
+    }
+    50% {
+        background-color: rgb(255, 188, 2);
+        color: black;
+    }
+    100% {
+        background-color: rgb(255, 2, 2);
+        color: white;
+    }
+}
+
+
+/*mentett napló listán játszok kicsit*/
+
+.kijelolve {
+    padding: 20px;
+    background-color: rgba(206, 241, 247, 0.979);
+    box-shadow: 2px 2px 4px inset rgba(66, 66, 62, 0.705);
+    font-size: 1.2em;
+}
+
+
+/*fő oldalam youtube api lejátszóm*/
+
+.videoLoad {
+    border-radius: 15px;
+    padding: 30px;
+    background-color: initial;
+    animation: videoLoadAnim;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes videoLoadAnim {
+    0% {
+        background-color: rgb(0, 0, 0);
+    }
+    25% {
+        background-color: rgb(238, 255, 6);
+    }
+    50% {
+        background-color: rgb(238, 238, 238);
+    }
+    75% {
+        background-color: rgb(250, 225, 0);
+    }
+    100% {
+        background-color: rgb(0, 0, 0);
+    }
+}
+
+
+/*loading modal a főoldalon*/
+
+.modal {
+    padding-top: 180px;
+}
+
+#loadingModal .modal-content {
+    background-color: rgb(206, 233, 241);
+}
+
+
+/*animáció a captcha eredmény jelzésére*/
+
+.captcha {
+    color: black;
+    background-color: inherit;
+    animation: tortent;
+    animation-duration: 3s;
+    animation-iteration-count: 2;
+}
+
+@keyframes tortent {
+    50% {
+        background-color: aqua;
+    }
+}
+
+
+/*táblázatom a felhasználói oldalon*/
+
+.wh {
+    background-color: white;
+}
+
+.tapanyag_gorgo {
+    height: 350px;
+    overflow-y: scroll;
+}
+
+#sorism:hover {
+    cursor: pointer;
+}
+
+#sorism {
+    background-color: antiquewhite;
+    border: 1px solid seashell;
+}
+
+.diagline {
+    background-color: green;
+    width: 100%;
+    color: white;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 2px;
+    padding-right: 5px;
+}
+
+.diaglineSajat {
+    background-color: green;
+    width: 100%;
+    color: white;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: 1px solid red;
+    padding: 2px;
+    padding-right: 5px;
+}
+
+.sorozatinfo {
+    display: none;
+}
+
+#korabbi_gyak_lista_reszletezo {
+    height: 450px;
+    overflow-y: scroll;
+}

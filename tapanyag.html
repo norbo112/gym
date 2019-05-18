@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gyakorlatok</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="tapanyag.js"></script>
+
+
+    <link rel="stylesheet" href="mystyle.css">
+    <script src="HttpClient.js"></script>
+    <script src="naplo.js"></script>
+    <script src="user.js"></script>
+    <script src="ccc.js"></script>
+
+    <style>
+        .tap_header {
+            background-color: rgb(206, 206, 206);
+            font-size: 14pt;
+            font-weight: bold;
+            padding-right: 16px;
+        }
+        
+        .tap_header span {
+            padding-top: 2px;
+            padding-bottom: 2px;
+            display: inline-block;
+            width: 10%;
+        }
+        
+        .tap_adat {
+            background-color: rgba(221, 221, 221, 0.575);
+            height: 350px;
+            overflow-y: scroll;
+            font-size: 14pt;
+            /*padding: 5px;
+            padding-left: 14px;
+            padding-right: 0px;
+            padding-top: 0px;*/
+        }
+        
+        .tap_adat span {
+            padding-left: 2px;
+            padding-right: 2px;
+            display: inline-block;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            width: 10%;
+        }
+        
+        span.tapnev {
+            width: 30%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse visible-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li class="active"><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad1"><progress id="myProgress1"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo1" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot1"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav class="navbar navbar-inverse navbar-fixed-top hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li class="active"><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad2"><progress id="myProgress2"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo2" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot2"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 60px; margin-bottom: 55px;">
+        <div class="row gyaknezorow">
+            <dir class="col-md-12 col-sm-12 col-xs-12 text-center">
+                <h1>Tápanyagtáblázat</h1>
+                <p>Néhány ismertebb tápanyag tápértéke</p>
+                <span id="tapanyag"></span>
+            </dir>
+        </div>
+    </div>
+
+    <footer class="container-fluid" id="footercontent">
+    </footer>
+</body>
+
+</html>

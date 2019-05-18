@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CheckDataJSTest</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="CheckData.js"></script>
+    <script>
+        var e = undefined;
+        $(document).ready(function() {
+            e = new CheckData();
+        });
+
+        function ellenor() {
+            if (e.doRgp(/[A-Za-z0-9]+/, "#inp", 30)) {
+                console.log("regexp True lett");
+            } else {
+                console.log("regexp False lett");
+            }
+        }
+
+        function ellenor2() {
+            if (e.doRgp(/(\d)(\d)(\d)/, "#inp2", 3)) {
+                console.log("regexp True lett");
+            } else {
+                console.log("regexp False lett");
+            }
+        }
+
+        function mindketellen() {
+            e.doRgpTomeg(["szam", "szoveg", "szam"], [
+                '#inp',
+                '#inp2',
+                '#inp3'
+            ]);
+        }
+    </script>
+
+    <style type="text/css">
+        .checkinfo {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1>DataCheck JS Test</h1>
+            <p>Tesztelem az ellenörző kis osztályomat, amit könnyedén felhasználhatom más oldalakon illetve továbbfejleszthetem
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="input-group">
+                    <div class="input-group-addon">Teszt szöveg</div>
+                    <input type="text" class="form-control" id="inp" placeholder="Teszt szöveg ide...">
+                    <span class="checkinfo" id="inp_ci">
+                        Csak számot fogadok el!
+                    </span>
+                </div>
+                <button onclick="ellenor()" type="button" class="btn btn-default">Ellenőriz</button>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="input-group">
+                    <div class="input-group-addon">Teszt szöveg</div>
+                    <input type="text" class="form-control" id="inp2" placeholder="Teszt szöveg ide...">
+                    <span class="checkinfo" id="inp2_ci">
+                        Csak szöveget fogadok el!
+                    </span>
+                </div>
+                <button onclick="ellenor2()" type="button" class="btn btn-default">Ellenőriz</button>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="input-group">
+                    <div class="input-group-addon">Teszt szöveg</div>
+                    <input type="text" class="form-control" id="inp3" placeholder="Teszt szöveg ide...">
+                    <span class="checkinfo" id="inp3_ci">
+                        Csak számot fogadok el!
+                    </span>
+                </div>
+                <p></p>
+                <button type="button" onclick="mindketellen()" class="btn btn-default">Összes ellenőrzése</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

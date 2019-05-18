@@ -1,0 +1,8 @@
+str += "<table class='table talbe-bordered table-hover'>";
+        str += "<thead><tr><th>Étel neve</th>";
+        str += "<th>Energia</th>";
+        str += "<th>Kalória</th>";
+        str += "<th>Fehérje</th>";
+        str += "<th></th>";
+        str += "<th></th>";
+        str += "</tr></thead><tbody>";

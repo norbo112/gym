@@ -1,0 +1,118 @@
+.scrolls {
+    /*height: 350px;*/
+    overflow: auto;
+}
+
+.panel {
+    /*background-color: rgb(248, 208, 156);*/
+    background-color: rgb(238, 238, 238);
+    box-shadow: 2px 5px 10px 2px rgb(148, 117, 77);
+}
+
+.panel_hirek {
+    background-color: white;
+    box-shadow: 2px 5px 10px 2px rgb(148, 117, 77);
+    padding: 15px;
+    border-radius: 30px;
+}
+
+.panel .panel-heading {
+    background-color: rgb(148, 117, 77);
+    color: white;
+}
+
+.panel_hirek .panel-heading {
+    background-color: rgb(252, 255, 226);
+    color: black;
+    border-left: 1px solid rgb(148, 117, 77);
+    border-right: 1px solid rgb(148, 117, 77);
+    border-bottom: 1px solid rgb(148, 117, 77);
+    border-top: 0px;
+}
+
+.panel .panel-footer {
+    background-color: rgb(148, 117, 77);
+    color: white;
+}
+
+.panel_hirek .panel-footer {
+    background-color: rgb(252, 255, 226);
+    color: black;
+    border-left: 1px solid rgb(148, 117, 77);
+    border-right: 1px solid rgb(148, 117, 77);
+    border-bottom: 0;
+    border-top: 1px solid rgb(148, 117, 77);
+}
+
+.nav-pills {
+    background-color: rgb(107, 86, 58);
+    color: white;
+}
+
+.nav-pills li.active a {
+    color: white;
+    background-color: black;
+}
+
+.nav-pills li.active a:hover {
+    color: white;
+    background-color: rgb(163, 52, 52);
+}
+
+.nav-pills li a {
+    color: white;
+}
+
+.nav-pills li a:hover {
+    color: black;
+}
+
+.nav-pills li a:active {
+    color: black;
+}
+
+.tab-content {
+    /*background-color: rgba(255, 217, 4, 0.404);*/
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    height: auto;
+}
+
+.hszmegjelenito {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-color: rgb(248, 208, 156);
+    padding: 15px;
+    padding-top: 30px;
+    display: none;
+    border-radius: 10px;
+    box-shadow: 7px 5px 5px inset rgb(148, 117, 77);
+    z-index: 1;
+}
+
+.panel_hirek .hszmegjelenito {
+    background-color: rgb(245, 240, 234);
+    box-shadow: 4px 1px 1px inset rgb(252, 255, 226);
+    margin-top: 0px;
+    border-left: 1px solid rgb(148, 117, 77);
+    border-right: 1px solid rgb(148, 117, 77);
+    border-bottom: 3px solid rgb(148, 117, 77);
+    border-top: 0;
+    border-radius: 0 0 15px 15px;
+}
+
+.panel_hirek .hszmegjelenito blockquote {
+    background-color: rgb(252, 255, 226);
+    /*box-shadow: 3px 7px 4px 8px rgb(185, 170, 159);*/
+    box-shadow: 0 0 0 0 rgb(185, 170, 159);
+    border-left: 10px solid white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+/*blockquote {
+    background-color: cornsilk;
+    box-shadow: 2px 5px 10px 2px rgb(148, 117, 77);
+}*/

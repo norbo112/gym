@@ -1,0 +1,15 @@
+<form>
+    <div class="form-group">
+        <label for="napszaknev">Napszak: </label>
+        <select name="napszaknev" id="napszaknevid" class="form-control">
+            <option value="Reggeli">Reggeli</option>
+            <option value="10:00">10:00</option>
+            <option value="Ebéd">Ebéd</option>
+            <option value="15:00">15:00</option>
+            <option value="Vacsora">Vacsora</option>
+        </select>
+    </div>
+    <button type="button" onclick="addEtrendEtelNapszak()" class="btn btn-default">Hozzáadás</button>
+</form>
+<br><br>
+<span id='result_etrend_napszaklista'></span>

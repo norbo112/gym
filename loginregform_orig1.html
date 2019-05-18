@@ -1,0 +1,239 @@
+<div class="row hirek">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Regisztráció</div>
+            <div class="panel-body scrolls" id="regelo">
+                <div id="hibaDiv"></div>
+                <!-- regisztrációs úrlap, ezt lehet js-ből fogom megjeleníteni -->
+                <form id="regUrlap" class="form-horizontal" action="#" method="POST">
+                    <fieldset>
+                        <legend>Belépési információk</legend>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="vnev">Vezetéknév:*</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="vnev" name="vnev" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="vnevHiba">
+                                        Vezetéknév megadása közelező
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="knev">Keresztnév:*</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="knev" name="knev" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="knevHiba">
+                                    Keresztnév megadása közelező
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="email">Email:*</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="email" name="email" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="emailHiba">
+                                    Email megadása közelező
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="jelszo1">Jelszó:*</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="password" id="jelszo1" name="jelszo1" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="jelszo1Hiba">
+                                        Jelszó megadása közelező
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="jelszo2">Jelszó mergerősítése:*</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="password" id="jelszo2" name="jelszo2" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="jelszo2Hiba">
+                                    A két jelszó nem egyezik
+                            </span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Általános információk</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="megye">Megye: </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="megye" id="megye">
+                                    <option></option>
+                                    <option value="BK">Bács-Kiskun</option>
+                                    <option value="Bar">Baranya</option>
+                                    <option value="Bekes">Békés</option>
+                                    <option value="BAZ">Borsod-Abaúj-Zemplén</option>
+                                    <option value="Cson">Csongrád</option>
+                                    <option value="Fejer">Fejér</option>
+                                    <option value="GyMS">Győr-Moson-Sopron</option>
+                                    <option value="HB">Hajdú-Bihar</option>
+                                    <option value="Pest">Pest</option>
+                                    <option value="Hev">Heves</option>
+                                    <option value="JNSZ">Jász-Nagykun-Szolnok</option>
+                                    <option value="KE">Komárom-Esztergom</option>
+                                    <option value="Nog">Nográd</option>
+                                    <option value="Som">Somogy</option>
+                                    <option value="SzSzB">Szabolcs-Szatmár-Bereg</option>
+                                    <option value="Tolna">Tolna</option>
+                                    <option value="Vas">Vas</option>
+                                    <option value="Vesz">Veszprém</option>
+                                    <option value="Zala">Zala</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="varos">Város:</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="varos" name="varos" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="varosHiba">
+                                Csak betüket tartalmazhat
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="cim">Cím:</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="cim" name="cim" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="cimHiba">
+                                Csak betüket és számokat tartalmazhat
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="iranyitoszam">Irányitószám:</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="iranyitoszam" name="iranyitoszam" />
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="iranyitoszamHiba">
+                                    Csak 4 számot tartalmazhat
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="tagneme">Nem: </label>
+                            <label class="radio-inline sajatRadio"><input type="radio" name="tagneme" value="Férfi">Férfi</label>
+                            <label class="radio-inline sajatRadio"><input type="radio" name="tagneme" value="Nő">Nő</label>
+
+                            <span class="hibaVisszajelzes hibaSzakasz" id="tagnemeHiba">
+                                        Kérlek válaszd ki a nemed!
+                                    </span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Edzésnapló információk</legend>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="sajatsuly">Súlyod(kg): </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="sajatsuly" id="sajatsuly">
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="sajatsulyHiba">
+                                    Csak számot tartalmazhat nem lehet 0
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="mellcsucs">Max fekvenyomás(kg): </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="mellcsucs" id="mellcsucs">
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="mellcsucsHiba">
+                                    Csak számot tartalmazhat nem lehet 0
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="guggolocsucs">Max guggoló súly(kg): </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="guggolocsucs" id="guggolocsucs">
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="guggolocsucsHiba">
+                                    Csak számot tartalmazhat nem lehet 0
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="felhuzocsucs">Max Felhúzás (kg): </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="felhuzocsucs" id="felhuzocsucs">
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="felhuzocsucsHiba">
+                                    Csak számot tartalmazhat nem lehet 0
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="magassag">Magasság (cm): </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" name="magassag" id="magassag">
+                            </div>
+                            <span class="hibaVisszajelzes hibaSzakasz" id="magassagHiba">
+                                    Csak számot tartalmazhat nem lehet 0
+                            </span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>&nbsp;</legend>
+                        <button class="btn btn-default" type="submit">Regisztál</button>
+                        <button class="btn btn-default" type="reset">Reset</button>
+                    </fieldset>
+                </form>
+
+                <!-- reg űrlap vége-->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="panel panel-default scrolls">
+                <div class="panel-heading" id="login2head">Bejelentkezés</div>
+                <div class="panel-body" id="login2">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- captcha row begin 
+            <div class="col-md-12">-->
+            <div class="panel panel-default scrolls">
+                <div class="panel-heading">Biztonság</div>
+                <div class="panel-body">
+                    <blockquote>
+
+                        <div class="media">
+                            <div class="media-left">
+                                <img class="media-object img-thumbnail" src="tmp_res/nwctest.php" alt="Image" id="capimg" style="width: 230px; height: 70px;">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Kérlek add meg, hogy mi látható a képen</h4>
+
+                                <form id="capthaForm" action="javascript:void(0)" method="POST" role="form">
+                                    <div class="form-group">
+                                        <label for="bevitelCap">Képre kattintva újratöltheted</label>
+                                        <input pattern="[0-9]{1,}" title="Négy számjegyből állhat" type="text" style="width: 40%;" class="form-control" name="bevitelCap" id="bevitelCap" placeholder="Input field">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" id="subgombCap">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <p id="resultCap"></p>
+                        <footer>jnorbo[kukac]gmail[pont]com <i id='idokijelzo'>2018-07-31 00:36:36</i></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <!--</div>
+             captcha row end-->
+        </div>
+    </div>
+
+
+
+</div>

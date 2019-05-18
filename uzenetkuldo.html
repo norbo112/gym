@@ -1,0 +1,28 @@
+<div id="hibaDiv2">
+</div>
+<form id="uzikuldoform" action="#" method="POST">
+    <div class="form-group">
+        <label for="uzi_cim">Cím:</label>
+        <input type="text" class="form-control" name="uzi_cim" id="uzi_cim">
+        <span class="hibaVisszajelzes hibaSzakasz" id="uzi_cimHiba">
+            Csak betüket és számokat tartalmazhat, megadása kötelező
+            </span>
+    </div>
+    <div class="form-group">
+        <label for="hir_tipus">Kategória:</label>
+        <select class="form-control" name="uzi_tipus" id="uzi_tipus">
+            <option value="Webalkalmazás">Web alkalmazás</option>
+            <option value="Fejlesztés">Fejlesztés</option>
+            <option value="Eszközök">Napló eszközök</option>
+            <option value="Általános">Általános hírek</option>
+            </select>
+    </div>
+    <div class="form-group">
+        <label for="uzi_note">Tartalom:</label>
+        <textarea class="form-control" name="uzi_note" id="uzi_note"></textarea>
+        <span class="hibaVisszajelzes hibaSzakasz" id="uzi_noteHiba">
+            Csak betüket és számokat tartalmazhat, megadása kötelező
+            </span>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="uzikuldo()">Beküld</button>
+</form>

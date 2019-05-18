@@ -1,0 +1,208 @@
+Gyakorlatok és Táp.
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <title>Edzésnapló V2</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="hirek.css">
+    <script src="gyakorlatlista.js"></script>
+
+    <script src="gyaklista3.js"></script>
+    <script src="HttpClient.js"></script>
+    <script src="edzesnaplo.js"></script>
+    <script src="naplo.js"></script>
+    <script src="hirkuldo.js"></script>
+    <script src="user.js"></script>
+    <script src="reg.js"></script>
+    <script src="ccc.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse hidden-md hidden-lg">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad1"><progress id="myProgress1"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo1" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot1"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="357"> -->
+    <nav class="navbar navbar-inverse navbar-fixed-top hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad2"><progress id="myProgress2"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo2" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="badge" id="uziPot2"></span>
+                                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                                    <span class="glyphicon glyphicon-log-in"></span>
+                                </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- <div class="jumbotron" style="margin-bottom: 20px">
+        <h1>Edzésnapló</h1>
+        <p>Üdvözöllek az edzésnapló webes alkalmazásban</p>
+        <p>Rögzítheted a napi tevékenységedet, majd el is mentheted</p>
+        <p class="text-info">Kérlek jelentkezz be vagy regisztálj hogy további lehetőségek nyiljanak meg a napló használata során
+        </p>
+        <p class="text-info">
+            Napi napló mentése az adatbázisban. Új gyakorlat vagy meglévő szerkesztése az admin felhasználóknak
+        </p>
+    </div> -->
+
+    <div class="container hirek" style="margin-top: 60px">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 id="login2Udv" class="text-center">Edzésnapló</h1>
+                <p>Üdvözöllek az edzésnapló webes alkalmazásban</p>
+                <p>Rögzítheted a napi tevékenységedet, majd el is mentheted</p>
+                <p class="text-info">Kérlek jelentkezz be vagy regisztálj hogy további lehetőségek nyiljanak meg a napló használata során
+                </p>
+                <p class="text-info">
+                    Napi napló mentése az adatbázisban. Új gyakorlat vagy meglévő szerkesztése az admin felhasználóknak. Hír hozzászólás lehetősége, üzenet küldése olvasása.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 hirek" id="hirek">
+                <!--Hírek, bejegyzések megjelenítése itt-->
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+    <div class="container text-center" id="playerShow">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <div id="player"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!--loginregform itt-->
+    <div class="container" id="hanincslog">
+
+    </div>
+    <!-- hirek, bejegyzések beküldése, csak admin felhasználóknak-->
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-12" id="hirekAdd">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="webhirhszmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Hozzászólás küldése</h4>
+                    <span id="hibaDiv4"></span>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" name="wbtext" id="wbtext" cols="60" rows="10"></textarea>
+                    <span class="hibaVisszajelzes hibaSzakasz" id="wbtextHiba">
+                        Csak betűket és számokat tartalmazhat, ?!., és"-jel </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="whreset();">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="whmodOn();">Elküld</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Betöltés</h4>
+                </div>
+                <div class="modal-body">
+                    <progress id="myProgress2"></progress>
+                    <p>Töltöm aZ adatokat, kérlek várj türelemmel!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- loading modal end-->
+    <!-- Hiba Modal -->
+    <div class="modal fade" id="hibaModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Sikertelen</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Kérlek add meg a lenti képen látható helyes kódot!</p>
+                    <input type="hidden" name="fhonnan" id="fhonnan">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hibas modal end-->
+
+
+    <footer class="container-fluid" id="footercontent">
+    </footer>
+
+</body>
+
+</html>

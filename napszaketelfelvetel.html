@@ -1,0 +1,20 @@
+<h2>Étel hozzáadása</h2>
+<p>Kérlek válaszd ki, melyik napszakhoz szeretnéd adni az ételt és mennyit</p>
+<h3 id="etelneve"></h3>
+<form>
+    <div class="form-group">
+        <label for="napszaknev">Napszak: </label>
+        <span id="napszaklista0"></span>
+    </div>
+    <div class="form-group">
+        <label for="mennyi">Mennyiség: </label>
+        <select class="form-control" name="mennyi" id="mennyi">
+            <option value="1">1.adag (100g)</option>
+            <option value="2">2.adag (200g)</option>
+            <option value="3">3.adag (300g)</option>
+            <option value="4">4.adag (400g)</option>
+            <option value="5">5.adag (500g)</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-default" onclick="etelHozzaadNapszakhoz()">Hozzáad</button>
+</form>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <title>Edzésnapló - Napi tevékenység</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="mystyle.css">
+
+    <script src="HttpClient.js"></script>
+    <script src="Info.js"></script>
+    <script src="gyakorlat_add.js"></script>
+    <script src="edzesnaplojson.js"></script>
+    <script src="naplo.js"></script>
+    <script src="user.js"></script>
+    <script src="ccc.js"></script>
+    <!-- edzesterv2.js ami biztosan jó, 3as a továbbfejlesztett-->
+    <script src="edzesterv3.js"></script>
+
+    <style>
+        .test+.tooltip>.tooltip-inner {
+            background-color: rgb(153, 227, 245);
+            color: rgb(0, 0, 0);
+            border: 1px solid green;
+            padding: 15px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse visible-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad2"><progress id="myProgress2"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo2" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span class="badge" id="uziPot1"></span>
+                        </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                        </button>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Edzésnapló</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="napitev.html">NapiTerv</a></li>
+                <li><a href="gyaklista.html">Korábbi naplók megtekintése</a></li>
+                <li><a href="gyaknezo.html">Gyakorlatok és Táp.</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="statusLoad1"><progress id="myProgress1"></progress></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" id="uziJelzo1" class="btn btn-info navbar-btn" onclick="window.location='felhasznalo.html'">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="badge" id="uziPot2"></span>
+                </button>
+                        <button type="button" onclick="kijelentkezo();" class="btn btn-info navbar-btn">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                </button>
+                    </div>
+
+                    <!-- proba jeleggel átteszem a bal oldalra a stoppert lebegőként
+                    <div class="btn-group">
+                        <button style="font-weight: bold" onclick="javascript:s_run();" type="button" id="stopper_kijelzo" class="btn btn-link navbar-btn">00:00:00</button>
+                        <button onclick="javascript:s_stop();" class="btn btn-link navbar-btn">
+                                <span class="glyphicon glyphicon-off"></span>
+                        </button>
+                    </div>
+                -->
+                </li>
+
+
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="container hirek" style="margin-top: 60px">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 id="login2Udv">Edzésnapló</h1>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="napinaploedit">
+                <h3>Aktuális napi edzéstevényekség vezérlése</h3>
+                <p>
+                    Itt lesz néhány funkció, amivel lehetőséged van a napi tevékenység rőgzítésére. Kérlek regisztrálj ha még nem tetted meg, a napi tevékenység mentését csak regisztrált tagok érhetik el.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login and Reg Form 
+    <div class="container" id="hanincslog">
+
+    </div>-->
+
+    <div class="container text-center hirek" id="napinaplo">
+        <div class="row">
+            <div class="col-xs-2">
+                <h2>Gyakorlat hozzáadása</h2>
+            </div>
+            <div class="col-xs-10">
+                <h2>Napi tevékenység és időpontjai</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-center">
+                <form id="ujgyakhozzaad" method="POST">
+                    <div class="form-group" id="dinamikusSelect"></div>
+                    <div class="form-group row">
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                            <label class="form-control" for="gySuly">Súly:</label>
+                            <input class="form-control" type="text" id="gySuly" name="gySuly">
+                            <span class="hibaVisszajelzes" id="gySulyHiba">
+                                        Kérlek egész számot és nem nullát adj meg!
+                                    </span>
+                        </div>
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                            <label class="form-control" for="gyIsm">Ism:</label>
+                            <input class="form-control" type="text" id="gyIsm" name="gyIsm">
+                            <span class="hibaVisszajelzes" id="gyIsmHiba">
+                                            Kérlek egész számot és nem nullát adj meg!
+                                    </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control" for="gyNote">Megjegyzés:</label>
+                        <textarea class="form-control" id="gyNote" name="gyNote"></textarea>
+                        <span class="hibaVisszajelzes" id="gyNoteHiba">
+                                    Ha nem hagyod üresen akkor kérlek csak számok és betűk legyenek.
+                                </span>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-block" onclick="addGyakorlat()">Hozzáad</button>
+                        <button type="reset" class="btn btn-default btn-block" onclick="clearHibak()">Reset</button>
+                        <span id="addujgyak"></span>
+                    </div>
+                </form>
+                <br>
+                <h4>Korábbi naplók behívása szerkesztésre</h4>
+                <div class="form-group">
+                    <label for="keresoNapilista">Napi kereső</label>
+                    <input type="date" class="form-control" id="napikereso">
+                </div>
+                <span id="korabbinaplok"></span>
+
+            </div>
+            <div class="col-xs-10 text-left">
+                <div class="container-fluid">
+                    <div class="row content">
+                        <div class="col-md-12" id="gyakLista"></div>
+                    </div>
+                    <div class="row content">
+                        <div class="container-fluid text-center">
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <h2>Napi tevékenység időpontjai</h2>
+                                </div>
+                            </div>-->
+                            <div class="row">
+                                <div class="col-md-12 text-left" id="gyakIdopontok"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-left">
+                                    <!-- gyak notes hozzáadása-->
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="hibaDivNoteModal"></div>
+
+                                            <div class="form-group">
+                                                <label class="form-control" for="nnote">Megjegyzés a naplóhoz: </label>
+                                                <textarea class="form-control" name="nnote" id="nnote" cols="40" rows="10"></textarea>
+                                                <br>
+                                                <span class="hibaVisszajelzes hibaSzakasz" id="nnotesHiba">
+                                                        Ha kitöltöd, speciális karaktereket nem tartalmazhat!
+                                                    </span>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="form-group">
+                                                <button class="btn btn-default" type="button" onclick="addNote()">Mentés</button>
+                                                <button class="btn btn-default" type="button" onclick="resetNote()">Törlés</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- gyak notes hozzáadás vége-->
+                                </div>
+                            </div>
+                            <div class="row content">
+                                <div class="col-md-12" id="korabbijelzo"></div>
+                            </div>
+                            <div class="row content">
+                                <div class="col-md-12" id="korabbijelzo2"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-center" id="mentes_egyebb"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- kiválasztott gyakorlat összesítő diagram-->
+    <div class="container text-center hirek">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2>Kiválaszott gyakorlat korábbi rögzített és megmozgatott súlya</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="gyakDiagCim">Amikor kiválasztod a elvégezni kívánt gyakorlatot, itt láthatod a korábbi rögzített edzéseket</h3>
+                    </div>
+                    <div class="panel-body" id="gyakDiagram">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edzésterv készítő-->
+    <div class="container text-center hirek">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                <div class="row">
+                    <h3>Menü</h3>
+
+                    <form>
+
+                        <div class="form-group">
+                            <label class="form-control" for="edzesnap">Edzésnap: </label>
+                            <select name="edzesnap" class="form-control" id="edzesnap">
+                            <option value="alap">Kérlek válassz...</option>
+                            <option value="1 edzésnap">1. edzésnap</option>
+                            <option value="2 edzésnap">2. edzésnap</option>
+                            <option value="3 edzésnap">3. edzésnap</option>
+                            <option value="4 edzésnap">4. edzésnap</option>
+                            <option value="5 edzésnap">5. edzésnap</option>
+                            <option value="6 edzésnap">6. edzésnap</option>
+                            <option value="7 edzésnap">7. edzésnap</option>
+                        </select>
+                        </div>
+                        <div class="form-group" id="ed_gyaklista"></div>
+                        <div class="form-group" id="ed_gyakizomlist"></div>
+                        <!--ide kell még egy sorozat és ismétlés kombo bevitele-->
+                        <h3>Sorozat és <br> ismétlés</h3>
+                        <div class="form-group row">
+
+
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <label for="be_sor" class="form-control">Sor</label>
+                                <input type="text" class="form-control" name="be_sor" id="be_sor_num" />
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <label for="tol" class="form-control">Tol</label>
+                                <input type="text" class="form-control" name="tol" id="tol_num" />
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <label for="ig" class="form-control">Ig</label>
+                                <input type="text" class="form-control" name="ig" id="ig_num" />
+                            </div>
+                        </div>
+                        <p id='sorism'>Hány sorozatot és mely ismétlés számok közt mozgatod a súlyt . Ha ugyanazt a számot irod, akkor azonos ismétlésekkel végzed a gyakorlatot. Értelem szerüen csökken a szám akkor piramisban végzed.
+                        </p>
+                        <div class="btn-group-vertical">
+                            <button type="button" class="btn btn-primary" onclick="addEdzesTervElem()">Hozzáad</button>
+                            <button type="button" class="btn btn-primary" onclick="mentEdzesTerv()">Mentés</button>
+
+                            <button type="button" class="btn btn-info" onclick="ujTerv()">Új Terv</button>
+
+                            <button type="button" class="btn btn-info" onclick="adatMent()">Adatbázis mentés</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <h3>Tervek</h3>
+                    <h4>Helyi</h4>
+                    <span id="eTervek"></span>
+                    <h4>Közös</h4>
+                    <span id="eTervekDB"></span>
+                </div>
+
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="edzesterv"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infomodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="infomodalcim">Gyakorlat részletei</h4>
+                </div>
+                <div class="modal-body" id="infomodalinfo">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="ertesito">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #b3fda8;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Információ</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="ertesito_adat"></span>
+                </div>
+                <div class="modal-footer">
+                    <span id='btnPrint'></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Betöltés</h4>
+                </div>
+                <div class="modal-body">
+                    <progress id="myProgress2"></progress>
+                    <p>Töltöm aZ adatokat, kérlek várj türelemmel!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- loading modal end-->
+
+
+    <!-- lebegő stopper a bal oldalon-->
+    <div id="lebegoStopper">
+        <div class="btn-group">
+            <button style="font-weight: bold" onclick="javascript:s_run();" type="button" id="stopper_kijelzo" class="btn btn-default btn-stopper">00:00</button>
+            <button onclick="javascript:s_stop();" class="btn btn-default btn-stopper" id="stpoff">
+                    <span class="glyphicon glyphicon-off"></span>
+            </button>
+            <button onclick="stpToggle()" class="btn btn-default btn-stopper" id="stpIk">
+                    <span class="glyphicon glyphicon-chevron-left" id="stpikon"></span>
+            </button>
+        </div>
+    </div>
+
+
+    <footer class="container-fluid" id="footercontent">
+    </footer>
+
+</body>
+
+</html>
