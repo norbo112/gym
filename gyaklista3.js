@@ -86,10 +86,12 @@ function rogz_gyak_megjelenito() {
 function gyakNaploDatumMegj(id) {
     var str = new String();
     if (myobj) {
-        str += "<div class='list-group' id='napikeresendo' style='height: 250px; overflow: auto;'>";
+        //str += "<div class='list-group' id='napikeresendo' style='height: 250px; overflow: auto;'>";
+        str += "<div class='btn-group justified' id='napikeresendo' style='height: 150px; overflow: auto;'>";
         for (var i = 0; i < myobj.mentesidatum.length; i++) {
-            str += "<a class='list-group-item' href='#" + myobj.mentesidatum[i] + "' onclick='showInf(\"" + myobj.mentesidatum[i] + "\")'>" + myobj.mentesidatum[i] + "</a>";
+            str += "<a style='width: 20%;' class='btn btn-default' onclick='showInf(\"" + myobj.mentesidatum[i] + "\")'>" + myobj.mentesidatum[i] + "</a>";
         }
+        str += "<a style='width: 20%;' class='btn btn-primary' onclick='setToTop()'>Mind mutat</a>";
         str += "</div>";
 
         $(id).html(str);
