@@ -568,6 +568,11 @@ function naploSzuro() {
         }
     }
 
+    if (szurtnaplo.length == 0) {
+        info("Nincs mentett adat!", "white");
+        return;
+    }
+
     naplotMegjelenitSzurt("#korabbi_gyak_lista_reszletezo", szurtnaplo);
     $("#naploszuro").val("");
 }
