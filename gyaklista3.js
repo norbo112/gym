@@ -72,7 +72,7 @@ function rogz_gyak_megjelenito() {
                 edzesnaplo.push(new Naplo(mentDatum, JSON.parse(res2)));
                 //itt jelenitem meg a tényleges naplot, remélhetöleg felépült az edzésnapló tömböm
                 //
-                naplotMegjelenit("#korabbi_gyak_lista_reszletezo");
+                naplotMegjelenit("#korabbi_gyak_lista_reszletezo", edzesnaplo);
                 gyakNaploDatumMegj("#rogzitettNaplok");
             }
 
@@ -118,53 +118,53 @@ function clearSiblings() {
 
 //kikell egészítenem a gyakorlat össz suly-t és a napi összes megmozgatott suly
 //megjelenítésével
-function naplotMegjelenit(id) {
+function naplotMegjelenit(id, edzesnaplo_obj) {
     var str = new String();
 
     //dátum szerint sorba kellene rendeznem az objektumomat
-    edzesnaplo.sort(function(a, b) {
+    edzesnaplo_obj.sort(function(a, b) {
         return new Date(b.Datum) - new Date(a.Datum);
     });
 
-    for (var i = 0; i < edzesnaplo.length; i++) {
+    for (var i = 0; i < edzesnaplo_obj.length; i++) {
         //str += "<div class='containter-fluid'>";
         str += "<div class='panel panel-default'>";
-        str += "<div class='panel-heading' id='" + edzesnaplo[i].Datum + "'>" + edzesnaplo[i].Datum + "</div>";
+        str += "<div class='panel-heading' id='" + edzesnaplo_obj[i].Datum + "'>" + edzesnaplo[i].Datum + "</div>";
         str += "<div class='panel-body'>";
         str += "<div class='table-responsive'>";
         str += "<table id='keresendo' class='table table-bordered table-hover table-condensed'>";
         str += "<thead><tr>";
         str += "<th>Rögzítési dátum</th><th>Izomcsoport</th><th>Gyakorlat neve</th><th>Sorozat</th><th>Időpont</th><th>Össz(kg)</th>";
         str += "</tr></thead>";
-        var naplogyak = edzesnaplo[i].Gyaksik.naplo;
+        var szurtnaplo = edzesnaplo_obj[i].Gyaksik.naplo;
         var ossznapisuly = 0;
-        //console.log(naplogyak);
-        for (var j = 0; j < naplogyak.length; j++) {
+        //console.log(szurtnaplo);
+        for (var j = 0; j < szurtnaplo.length; j++) {
             var osszgyaksuly = 0;
             str += "<tbody>";
             str += "<tr>";
-            str += "<td>" + naplogyak[j].gyakrogzido + "</td>";
+            str += "<td>" + szurtnaplo[j].gyakrogzido + "</td>";
             //alább csak megjelenítettem a gyakorlat csoportot, sikerült e visszaszednem mysqlből php-n keresztül
             //és igen, sikerült, majd ez alapján számítom ki a rész (izomcsoport) eredményeket
-            str += "<td>" + naplogyak[j].gycsoport + "</td>";
-            str += "<td>" + naplogyak[j].megnevezes + "<br><em>" + naplogyak[j].megjegyzes + "</em></td>";
+            str += "<td>" + szurtnaplo[j].gycsoport + "</td>";
+            str += "<td>" + szurtnaplo[j].megnevezes + "<br><em>" + szurtnaplo[j].megjegyzes + "</em></td>";
             str += "<td>";
-            for (var k = 0; k < naplogyak[j].sorozat.suly.length; k++) {
-                str += naplogyak[j].sorozat.suly[k] + "x" + naplogyak[j].sorozat.ism[k] + "<br>";
-                osszgyaksuly = osszgyaksuly + (parseInt(naplogyak[j].sorozat.suly[k]) * parseInt(naplogyak[j].sorozat.ism[k]));
+            for (var k = 0; k < szurtnaplo[j].sorozat.suly.length; k++) {
+                str += szurtnaplo[j].sorozat.suly[k] + "x" + szurtnaplo[j].sorozat.ism[k] + "<br>";
+                osszgyaksuly = osszgyaksuly + (parseInt(szurtnaplo[j].sorozat.suly[k]) * parseInt(szurtnaplo[j].sorozat.ism[k]));
             }
             str += "</td>";
             str += "<td>";
             //próbálom kiszámítani az eltelt percet
-            var lmeret = naplogyak[j].sorozat.idop.length;
+            var lmeret = szurtnaplo[j].sorozat.idop.length;
             //console.log("lmeret: " + lmeret);
             for (var k = 0, l = lmeret - 1; k < lmeret; k++) {
-                str += "<i>" + naplogyak[j].sorozat.idop[k].substr(11.20) + "</i>&nbsp;";
+                str += "<i>" + szurtnaplo[j].sorozat.idop[k].substr(11.20) + "</i>&nbsp;";
 
                 if (k != 0) {
                     if (lmeret != 0) {
-                        var t = (Date.parse(naplogyak[j].sorozat.idop[l]) -
-                            Date.parse(naplogyak[j].sorozat.idop[l - k])) / 1000 / 60;
+                        var t = (Date.parse(szurtnaplo[j].sorozat.idop[l]) -
+                            Date.parse(szurtnaplo[j].sorozat.idop[l - k])) / 1000 / 60;
                         t = Math.floor(t);
                         str += "<span data-toggle='tooltip' data-placement='right' title='Eltelt idő " + t + " perc' class='label label-info test'>" + t + "</span>";
                     }
@@ -184,16 +184,16 @@ function naplotMegjelenit(id) {
         //itt hozzáadom a kinyert naplo notest, ha mindenoké
         //str += "<div class='col-md-10 megj'>";
         str += "<blockquote>";
-        if (edzesnaplo[i].Gyaksik.naplonote) {
-            if (edzesnaplo[i].Gyaksik.naplonote == "null") {
+        if (edzesnaplo_obj[i].Gyaksik.naplonote) {
+            if (edzesnaplo_obj[i].Gyaksik.naplonote == "null") {
                 str += "<i>Nem mentettél megjegyzést a naplóhoz</i>";
             } else {
-                var a = edzesnaplo[i].Gyaksik.naplonote.replace(/\"/g, "");
+                var a = edzesnaplo_obj[i].Gyaksik.naplonote.replace(/\"/g, "");
                 str += "<i>" + a + "</i>";
             }
 
-        } else if (edzesnaplo[i].Gyaksik.naplonotehiba) {
-            str += "<i>:: " + edzesnaplo[i].Gyaksik.naplonotehiba + "</i>";
+        } else if (edzesnaplo_obj[i].Gyaksik.naplonotehiba) {
+            str += "<i>:: " + edzesnaplo_obj[i].Gyaksik.naplonotehiba + "</i>";
         }
         //str += "</div>";
         str += "</blockquote>";
@@ -216,6 +216,7 @@ function naplotMegjelenit(id) {
 function setToTop() {
     window.location = "#top";
     clearSiblings();
+    naplotMegjelenit("#korabbi_gyak_lista_reszletezo", edzesnaplo);
 }
 
 function selectAdd(opt, optid) {
@@ -254,8 +255,8 @@ function exportCSV() {
         //$("#exportStatus").html(result);
         console.log("Fájl mentése folyamatban");
     }
-    http.makeRequest("naplogyakleker.php", adat);*/
-    window.open("naplogyakleker.php?csvkeres=1", "_blank");
+    http.makeRequest("szurtnaploleker.php", adat);*/
+    window.open("szurtnaploleker.php?csvkeres=1", "_blank");
 }
 
 function delnaplo(mentesidatum) {
@@ -291,7 +292,7 @@ function delnaplo(mentesidatum) {
         rogz_gyak_megjelenito();
     }
     var adat = "deldatum=" + encodeURIComponent(mentesidatum);
-    xhttp.makeRequest("naplogyakleker.php", adat);
+    xhttp.makeRequest("szurtnaploleker.php", adat);
 }
 
 //diagram készítéséhez tartozó függvények
@@ -498,13 +499,19 @@ function getSorozat(sorozat) {
     return str;
 }
 
-function info(str, szin) {
+function info(str, szin, szovegszin) {
     $("#delinfomodalinfo").html(str);
     if (szin != null) {
         $("#delinfomodal div.modal-content").css("background-color", szin);
+        if (szovegszin != null) {
+            $("#delinfomodal div.modal-content").css("color", szovegszin);
+        }
     }
 
     $("#delinfomodal").modal();
+    $("#delinfomodal").on('hide.bs.modal', function() {
+        $("#delinfomodal div.modal-content").css("color", "black");
+    });
 }
 
 //tömb ami tartalmazza a sorozat adatai-példányokat
@@ -531,4 +538,86 @@ function getSorozatAdat(id) {
             return;
         }
     }
+}
+
+/**
+ * funkcio a keresésre, amiben a mentett naplókat
+ * fogom szúrni, gyakorlatra, illetve izomcsoportra
+ */
+
+function naploSzuro() {
+    var str_adat = $("#naploszuro").val();
+    var szurtnaplo = new Array();
+    var egynaplo = undefined;
+    if (str_adat == "" || str_adat.length < 2) {
+        info("Kérlek add meg az izomcsoportot vagy a gyakorlat nevét!", "white");
+        return;
+    }
+
+    //info(str_adat + " kiválasztva.", "green", "white");
+    for (var i = 0; i < edzesnaplo.length; i++) {
+        egynaplo = edzesnaplo[i].Gyaksik.naplo;
+        for (var j = 0; j < egynaplo.length; j++) {
+            if (egynaplo[j].gycsoport == str_adat || egynaplo[j].megnevezes.indexOf(str_adat) > -1) {
+                szurtnaplo.push(egynaplo[j]);
+            }
+        }
+    }
+
+    naplotMegjelenitSzurt("#korabbi_gyak_lista_reszletezo", szurtnaplo);
+    $("#naploszuro").val("");
+}
+
+//ehhez tartozó gyakorlat megjelenítő, csak a kiszűrt adatokat jeleníti meg
+function naplotMegjelenitSzurt(id, szn) {
+    var str = "";
+
+    str += "<table class='table table-bordered table-hover table-condensed bg-info'>";
+    str += "<thead><tr>";
+    str += "<th>Rögzítési dátum</th><th>Izomcsoport</th><th>Gyakorlat neve</th><th>Sorozat</th><th>Időpont</th><th>Össz(kg)</th>";
+    str += "</tr></thead>";
+    var ossznapisuly = 0;
+    console.log(szn);
+    for (var j = 0; j < szn.length; j++) {
+        var osszgyaksuly = 0;
+        str += "<tbody>";
+        str += "<tr>";
+        str += "<td>" + szn[j].gyakrogzido + "</td>";
+        str += "<td>" + szn[j].gycsoport + "</td>";
+        str += "<td>" + szn[j].megnevezes + "<br><em>" + szn[j].megjegyzes + "</em></td>";
+        str += "<td>";
+        for (var k = 0; k < szn[j].sorozat.suly.length; k++) {
+            str += szn[j].sorozat.suly[k] + "x" + szn[j].sorozat.ism[k] + "<br>";
+            osszgyaksuly = osszgyaksuly + (parseInt(szn[j].sorozat.suly[k]) * parseInt(szn[j].sorozat.ism[k]));
+        }
+        str += "</td>";
+        str += "<td>";
+        var lmeret = szn[j].sorozat.idop.length;
+        for (var k = 0, l = lmeret - 1; k < lmeret; k++) {
+            str += "<i>" + szn[j].sorozat.idop[k].substr(11.20) + "</i>&nbsp;";
+
+            if (k != 0) {
+                if (lmeret != 0) {
+                    var t = (Date.parse(szn[j].sorozat.idop[l]) -
+                        Date.parse(szn[j].sorozat.idop[l - k])) / 1000 / 60;
+                    t = Math.floor(t);
+                    szn
+                    str += "<span data-toggle='tooltip' data-placement='right' title='Eltelt idő " + t + " perc' class='label label-info test'>" + t + "</span>";
+                }
+            }
+
+            str += "<br>";
+        }
+        str += "</td>";
+        ossznapisuly += osszgyaksuly;
+        str += "<td>" + osszgyaksuly + "</td>";
+        str += "</tr>";
+        str += "</tbody>";
+    }
+    //str += "<tr><td colspan='6'>Napi megmozgatott súly: <mark>" + ossznapisuly + " kg</mark></td>";
+    str += "</table>";
+    str += "</div>"; //table-responsive
+
+    $(id).html(str);
+    $('[data-toggle="tooltip"]').tooltip();
 }

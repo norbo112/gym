@@ -95,6 +95,8 @@ $(document).ready(function() {
     }
 
 
+    /*
+    ezt kiveszem, mert inkább másmodon szüröm az adatokat
     $("#kereso").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#keresendo tr").filter(function() {
@@ -115,7 +117,7 @@ $(document).ready(function() {
         $("#napikeresendo a").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
-    });
+    });*/
 
     //email küldése a kapcsolat oldalról
     wbkuldo = function() {
