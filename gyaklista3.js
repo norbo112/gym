@@ -18,6 +18,10 @@ $(document).ready(function() {
         s += 'Export to CSV <span class="glyphicon glyphicon-export"></span>';
         s += '</button><span id="exportStatus"></span>';
         $("#exportGomb").html(s);
+
+        $("#naploszuro").on("change", function() {
+            naploSzuro();
+        });
     } else {
         info("Diagramösszesítő használatához, kérlek jelentkezz be!");
     }
