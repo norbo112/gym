@@ -19,11 +19,14 @@ $(document).ready(function() {
         s += '</button><span id="exportStatus"></span>';
         $("#exportGomb").html(s);
 
+        $("#naploszuro").removeAttr("disabled");
         $("#naploszuro").on("change", function() {
             naploSzuro();
         });
     } else {
         info("Diagramösszesítő használatához, kérlek jelentkezz be!");
+
+        $("#naploszuro").attr("disabled", "disabled");
     }
 
 });
@@ -218,9 +221,14 @@ function naplotMegjelenit(id, edzesnaplo_obj) {
 }
 
 function setToTop() {
-    window.location = "#top";
-    clearSiblings();
-    naplotMegjelenit("#korabbi_gyak_lista_reszletezo", edzesnaplo);
+    if (logintEllenoriz()) {
+        window.location = "#top";
+        clearSiblings();
+        naplotMegjelenit("#korabbi_gyak_lista_reszletezo", edzesnaplo);
+    } else {
+        return;
+    }
+
 }
 
 function selectAdd(opt, optid) {
