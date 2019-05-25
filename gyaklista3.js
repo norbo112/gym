@@ -577,7 +577,7 @@ function naplotMegjelenitSzurt(id, szn) {
     str += "<th>Rögzítési dátum</th><th>Izomcsoport</th><th>Gyakorlat neve</th><th>Sorozat</th><th>Időpont</th><th>Össz(kg)</th>";
     str += "</tr></thead>";
     var ossznapisuly = 0;
-    console.log(szn);
+
     for (var j = 0; j < szn.length; j++) {
         var osszgyaksuly = 0;
         str += "<tbody>";
