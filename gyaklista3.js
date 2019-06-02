@@ -1,5 +1,6 @@
 var myobj = undefined; //dátumokat tartalmazo objektum
 var edzesnaplo = new Array();
+var szurtnaplo = undefined;
 
 function Naplo(mentesidatum, gyaksik) {
     this.Datum = mentesidatum;
@@ -258,17 +259,22 @@ function selectAddEvent(opt) {
     });
 }
 
-function exportCSV() {
-    /*var http = new HttpClient();
-    http.isAsync = false;
-    http.requestType = "POST";
-    var adat = "mentesidatum=csvkeres";
-    http.callback = function(result) {
-        //$("#exportStatus").html(result);
-        console.log("Fájl mentése folyamatban");
+function exportCSV(ok) {
+    if (logintEllenoriz() && ok && szurtnaplo.length != 0) {
+        /*var csvContent = "data:text/csv;charset=utf-8,";
+
+        szurtnaplo.forEach(function(d) {
+
+            var row = szurtnaplo.join(',');
+            csvContent += row + "\r\n";
+
+        });
+        var encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);*/
+        return;
     }
-    http.makeRequest("szurtnaploleker.php", adat);*/
-    window.open("szurtnaploleker.php?csvkeres=1", "_blank");
+
+    window.open("naplogyakleker.php?csvkeres=1", "_blank");
 }
 
 function delnaplo(mentesidatum) {
@@ -559,7 +565,7 @@ function getSorozatAdat(id) {
 
 function naploSzuro() {
     var str_adat = $("#naploszuro").val();
-    var szurtnaplo = new Array();
+    szurtnaplo = new Array();
     var egynaplo = undefined;
     if (str_adat == "" || str_adat.length < 2) {
         info("Kérlek add meg az izomcsoportot vagy a gyakorlat nevét!", "white");
