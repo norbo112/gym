@@ -367,7 +367,7 @@ function addGyakorlat() {
 function saveGyakorlatok() {
     localStorage.setItem(felh + "_gyakorlatok", JSON.stringify(gyakorlatok));
     localStorage.setItem(felh + "_naplonote", JSON.stringify(naplonote));
-    console.log("saveGyakorlatok lefutott");
+    //console.log("saveGyakorlatok lefutott");
 }
 
 //itt felépítem a mentett adatból a listámat
