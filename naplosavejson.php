@@ -5,6 +5,10 @@
         session_start();
     }
 
+    //késöbb mikor elkezdem fejleszteni az androidos alkalmazást, itt regexpel fogom
+    //vizsgálni az android készülék egyedi azonosítóját és majd annak fényében menteni, 
+    // vagyis felhasználot nem ellenőrzöm ekkor cookieban...
+
     if(!isset($_COOKIE['felhasznalo'])) {
         echo "Kérlek jelentkezz be a mentés elött";
         exit;

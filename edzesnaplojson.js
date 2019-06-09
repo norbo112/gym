@@ -308,7 +308,7 @@ function addGyakorlat() {
             return; //és persze innen kilépek
         }
     }
-    var suly = $("#gySuly").val()
+    var suly = $("#gySuly").val();
     if (suly == "" || isNaN(suly)) {
         $("#gySulyHiba").removeClass("hibaVisszajelzes");
         $("#gySuly").addClass("hibaOsztaly");
