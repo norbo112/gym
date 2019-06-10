@@ -73,7 +73,7 @@ $sql = "SELECT admin FROM felhasznalo WHERE email = '{$biztFelh}'";
 
     function echoGyakModal() {
         $str = "";
-        $str .= "<button type='button' class='btn btn-default btn-block' data-toggle='modal' data-target='#myModal'>Új gyakorlat</button>\n";
+        $str .= "<button type='button' class='btn btn-default' data-toggle='modal' data-target='#myModal'>Új gyakorlat</button>\n";
         $str .= '<div id="myModal" class="modal fade" role="dialog" style="padding-top: 10px">';
         $str .= '<div class="modal-dialog">';
         $str .= '<div class="modal-content">';

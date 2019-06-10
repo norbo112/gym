@@ -137,45 +137,58 @@
         </div>
         <div class="row">
             <div class="col-xs-2 text-center">
-                <form id="ujgyakhozzaad" method="POST">
+                <form class="myGyakAddForm" id="ujgyakhozzaad" method="POST">
                     <div class="form-group" id="dinamikusSelect"></div>
                     <div class="form-group row">
-                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                            <label class="form-control" for="gySuly">Súly:</label>
-                            <input class="form-control" type="text" id="gySuly" name="gySuly">
-                            <span class="hibaVisszajelzes" id="gySulyHiba">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                            <div class="input-group">
+                                <label class="form-control" for="gySuly">Súly:</label>
+                                <input class="form-control" type="text" id="gySuly" name="gySuly">
+                                <span class="hibaVisszajelzes" id="gySulyHiba">
                                         Kérlek egész számot és nem nullát adj meg!
                                     </span>
+                            </div>
                         </div>
-                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                            <label class="form-control" for="gyIsm">Ism:</label>
-                            <input class="form-control" type="text" id="gyIsm" name="gyIsm">
-                            <span class="hibaVisszajelzes" id="gyIsmHiba">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                            <div class="input-group">
+                                <label class="form-control" for="gyIsm">Ism:</label>
+                                <input class="form-control" type="text" id="gyIsm" name="gyIsm">
+                                <span class="hibaVisszajelzes" id="gyIsmHiba">
                                             Kérlek egész számot és nem nullát adj meg!
                                     </span>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-control" for="gyNote">Megjegyzés:</label>
-                        <textarea class="form-control" id="gyNote" name="gyNote"></textarea>
-                        <span class="hibaVisszajelzes" id="gyNoteHiba">
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="input-group">
+                                <label class="form-control" for="gyNote">Megjegyzés:</label>
+                                <textarea class="form-control" id="gyNote" name="gyNote"></textarea>
+                                <span class="hibaVisszajelzes" id="gyNoteHiba">
                                     Ha nem hagyod üresen akkor kérlek csak számok és betűk legyenek.
                                 </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-block" onclick="addGyakorlat()">Hozzáad</button>
-                        <button type="reset" class="btn btn-default btn-block" onclick="clearHibak()">Reset</button>
-                        <span id="addujgyak"></span>
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="btn-group-vertical">
+                                <button type="button" class="btn btn-default" onclick="addGyakorlat()">Hozzáad</button>
+                                <button type="reset" class="btn btn-default" onclick="clearHibak()">Reset</button>
+                                <span id="addujgyak"></span>
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <br>
-                <h4>Korábbi naplók behívása szerkesztésre</h4>
-                <div class="form-group">
-                    <label for="keresoNapilista">Napi kereső</label>
-                    <input type="date" class="form-control" id="napikereso">
+                <div class="myGyakAddForm">
+                    <h4>Korábbi naplók behívása szerkesztésre</h4>
+                    <div class="form-group">
+                        <label for="keresoNapilista">Napi kereső</label>
+                        <input type="date" class="form-control" id="napikereso">
+                    </div>
+                    <span id="korabbinaplok"></span>
                 </div>
-                <span id="korabbinaplok"></span>
-
             </div>
             <div class="col-xs-10 text-left">
                 <div class="container-fluid">
