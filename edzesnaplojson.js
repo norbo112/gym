@@ -58,7 +58,7 @@ function Gyakorlat(name, suly, ism, megj) {
     this.addIsmIdo = function(ismido) {
         //var d = new Date(ismido);
         //console.log("object:: " + d);
-        //d.setHours(d.getHours() -d.getTimezoneOffset() / 60);
+        ismido.setHours(ismido.getHours() - ismido.getTimezoneOffset() / 60);
         this.IsmRogzitesIdopontja.push(ismido);
     }
     this.setSuly = function(index, ujsuly) {
