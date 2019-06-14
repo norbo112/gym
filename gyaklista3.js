@@ -310,7 +310,7 @@ function delnaplo(mentesidatum) {
         rogz_gyak_megjelenito();
     }
     var adat = "deldatum=" + encodeURIComponent(mentesidatum);
-    xhttp.makeRequest("szurtnaploleker.php", adat);
+    xhttp.makeRequest("naplogyakleker.php", adat);
 }
 
 //diagram készítéséhez tartozó függvények
