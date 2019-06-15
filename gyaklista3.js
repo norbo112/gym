@@ -21,7 +21,10 @@ $(document).ready(function() {
         $("#exportGomb").html(s);
 
         $("#naploszuro").removeAttr("disabled");
-        $("#naploszuro").on("change", function() {
+        /*$("#naploszuro").on("change", function() {
+            naploSzuro();
+        });*/
+        $("#naploszuro").keyup(function(e) {
             naploSzuro();
         });
     } else {
@@ -567,8 +570,18 @@ function naploSzuro() {
     var str_adat = $("#naploszuro").val();
     szurtnaplo = new Array();
     var egynaplo = undefined;
-    if (str_adat == "" || str_adat.length < 2) {
-        info("Kérlek add meg az izomcsoportot vagy a gyakorlat nevét!", "white");
+    var regexp = new RegExp(/[A-Za-z0-9 ]+/, 'ig');
+    if (str_adat.length == 0) {
+        $("#szuroszam").text("0");
+        $("#naploszuro").removeClass('hiba_jelolo_szuro');
+        naplotMegjelenit("#korabbi_gyak_lista_reszletezo", edzesnaplo);
+        return;
+    }
+
+    if (!regexp.test(str_adat)) {
+        $("#szuroszam").text("0");
+        $("#naploszuro").addClass('hiba_jelolo_szuro');
+        //info("Kérlek add meg az izomcsoportot vagy a gyakorlat nevét!", "white");
         return;
     }
 
@@ -576,19 +589,24 @@ function naploSzuro() {
     for (var i = 0; i < edzesnaplo.length; i++) {
         egynaplo = edzesnaplo[i].Gyaksik.naplo;
         for (var j = 0; j < egynaplo.length; j++) {
-            if (egynaplo[j].gycsoport == str_adat || egynaplo[j].megnevezes.indexOf(str_adat) > -1) {
+            if (egynaplo[j].gycsoport.indexOf(str_adat) > -1 ||
+                egynaplo[j].megnevezes.indexOf(str_adat) > -1) {
                 szurtnaplo.push(egynaplo[j]);
             }
         }
     }
 
     if (szurtnaplo.length == 0) {
-        info("Nincs mentett adat!", "white");
+        $("#szuroszam").text("0");
+        $("#naploszuro").addClass('hiba_jelolo_szuro');
+        //info("Nincs mentett adat!", "white");
         return;
     }
 
+    $("#szuroszam").text(szurtnaplo.length);
     naplotMegjelenitSzurt("#korabbi_gyak_lista_reszletezo", szurtnaplo);
-    $("#naploszuro").val("");
+    $("#naploszuro").removeClass('hiba_jelolo_szuro');
+    //$("#naploszuro").val("");
 }
 
 //ehhez tartozó gyakorlat megjelenítő, csak a kiszűrt adatokat jeleníti meg

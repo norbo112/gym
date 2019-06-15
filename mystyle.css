@@ -411,3 +411,8 @@ a.vanlink {
     height: 450px;
     overflow-y: scroll;
 }
+
+.hiba_jelolo_szuro {
+    border: 1px solid red;
+    background-color: #ffcacb;
+}

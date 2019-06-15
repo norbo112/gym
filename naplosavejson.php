@@ -48,8 +48,7 @@
         echo " Sikertelen mentés :( ";
     }
     
-
-    //echo "<h2>Ezen időponton lesz mentve a napló: $mentesiIdopont ; a MySQL NOW() függvény is ezt adja</h2><br>";
+    
     function mentes($felhasznalo, $mentesiIdopont, $sajattomb)
     {
         $mysqli = new mysqli(ADBSERVER,ADBUSER,ADBPASS,ADBDB);
