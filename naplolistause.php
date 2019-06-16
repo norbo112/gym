@@ -25,12 +25,27 @@
 
     switch($keres) {
         case "MENTES":
-        break;
+            if(isset($_POST['job']) && $_POST['job'] != "") {
+                if($eredmeny = $naploclass->mentes(null,null,json_decode($_POST['job']))) {
+                    $adat["siker"] = "Sikeres mentés!";
+                } else {
+                    $adat = $naploclass->getHibaUzenet();
+                }
+            }
+            break;
         case "BEOLVAS":
-        break;
+            if(isset($_POST['datum']) && $_POST['datum'] != "") {
+                if($eredmeny = $naploclass->getNaploLista($_POST['datum'], null)) {
+                    $adat = $naploclass->getAdatokVissza();
+                } else {
+                    $adat = $naploclass->getHibaUzenet();
+                }
+            }
+            break;
         case "DATUMLISTA" :
             if($eredmeny = $naploclass->getMentesiDatum(null)) {
                 $adat = $naploclass->getAdatokVissza();
+                //$adat = $naploclass->getTestHibaMentesiDatum(); a java logika jo lett
             } else {
                 $adat = $naploclass->getHibaUzenet();
             }

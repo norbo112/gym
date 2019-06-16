@@ -58,11 +58,12 @@ class NaploLista
             $sql = "SELECT mentesidatum, gyakrogzitesiidopont ,megnevezes, megjegyzes, gyakorlat.gyak_id as azon, gyakorlat.csoport as csop FROM naplo, gyakorlat WHERE felhasznalo = '{$felhasznalo}' " .
                 "AND gyakorlat.gyak_id = naplo.gyak_id AND mentesidatum = '{$vandatum}' ORDER BY gyakrogzitesiidopont ASC";
         } else {
-            $this->hibauzenet[] = "Érvénytelen adat: " . $vandatum;
+            $this->hibauzenet['naplolistahiba'] = "Érvénytelen adat: " . $vandatum;
+            return false;
         }
 
         if (!($eredmeny = $this->mysql->query($sql))) {
-            $this->hibauzenet[] = "Hiba a lekérdezésben: " . $this->mysql->error;
+            $this->hibauzenet['naplolistahiba'] = "Hiba a lekérdezésben: " . $this->mysql->error;
             error_log("hiba a lekérdezésben " . $this->mysql->error);
             return false;
         } else {
@@ -77,7 +78,7 @@ class NaploLista
                         $this->adatokvissza["naplonote"] = "Nincs megjegyzés hozzáfűzve a naplóhoz";
                     }
                 } else {
-                    $this->hibauzenet[] = "Hiba történt a note lekérésében: " .
+                    $this->hibauzenet['naplolistahiba'] = "Hiba történt a note lekérésében: " .
                         $this->mysql->error;
                     return false;
                 }
@@ -85,21 +86,25 @@ class NaploLista
                 while ($tomb = $eredmeny->fetch_assoc()) {
                     $sorismtomb = $this->getSorIsmTomb($tomb['azon'], $tomb['mentesidatum']);
                     if(isset($sorismtomb['hiba'])) {
-                        $this->hibauzenet[] = "Hiba történt a sorozat lekérdezése közben ".$sorismtomb['hiba'];
+                        $this->hibauzenet['naplolistahiba'] = "Hiba történt a sorozat lekérdezése közben ".$sorismtomb['hiba'];
                         return false;
                     }
 
-                    $this->adatokvissza["naplo"][] = array(
-                        "gyakrogzido" => $tomb['gyakrogzitesiidopont'],
-                        "megnevezes" => $tomb['megnevezes'],
-                        "megjegyzes" => $tomb['megjegyzes'],
-                        "gycsoport" => $tomb['csop'],
+                    $this->adatokvissza["gyaksik"][] = array(
+                        "RogzitesIdopont" => $tomb['gyakrogzitesiidopont'],
+                        "Name" => $tomb['megnevezes'],
+                        "Megjegyzes" => $tomb['megjegyzes'],
+                        //"gycsoport" => $tomb['csop'],
                         "sorozat" => $sorismtomb
                     );
                 }
             }
             return true;
         }
+    }
+
+    public function getNaploNote($felhasznalo, $datum) {
+        //todo
     }
 
     public function getMentesiDatum($felhasznalo) {
@@ -109,12 +114,12 @@ class NaploLista
 
         $sql = "SELECT mentesidatum FROM naplo WHERE felhasznalo = '{$felhasznalo}' GROUP BY mentesidatum ORDER BY mentesidatum DESC";
         if(!($eredmeny = $this->mysql->query($sql))) {
-            $this->hibauzenet[] = " Hiba a lekérdezésben ".$this->mysqli->connect_error;
+            $this->hibauzenet['mentesidatumhiba'] = " Hiba a lekérdezésben ".$this->mysqli->connect_error;
             error_log("hiba a lekérdezésben ".$this->mysqli->error);
             return false;
         } else {
             if($eredmeny->num_rows == 0) {
-                $this->hibauzenet[] = "Nincsenek mentett naplók a megadott felhasználóhoz: ".$this->mysql->error;
+                $this->hibauzenet['mentesidatumhiba'] = "Nincsenek mentett naplók a megadott felhasználóhoz: ".$this->mysql->error;
                 return false;
             }
             while($tomb = $eredmeny->fetch_assoc()) {
@@ -137,15 +142,20 @@ class NaploLista
             error_log("Üres a sorozat tároló, vagy az adatok nem léteznek".$this->mysqli->connect_error);
         } else {
             while($tomb = $eredmeny_sor->fetch_assoc()) {
-                $res["suly"][] = $tomb['suly'];
-                $res["ism"][] = $tomb['ism'];
-                $res["idop"][] = $tomb['ismidopont'];
+                $res["Suly"][] = $tomb['suly'];
+                $res["Ism"][] = $tomb['ism'];
+                $res["IsmRogzitesIdopontja"][] = $tomb['ismidopont'];
             }
         }
         return $res;
     }
 
-    function mentes($felhasznalo, $mentesiIdopont, $sajattomb)
+    public function getTestHibaMentesiDatum() {
+        $res['mentesidatumhiba'] = "Test hiba érkezett";
+        return $res;
+    }
+
+    public function mentes($felhasznalo, $mentesiIdopont, $sajattomb)
     {
         if ($felhasznalo == null) {
             $felhasznalo = $this->tesztuser;
@@ -169,7 +179,7 @@ class NaploLista
                     "'{$this->gyaktomb[$sajattomb->gyaksik[$i]->Name]}', ".
                     "'{$gyakmegjegyzes}') ";
             if(!$this->mysql->query($sqlNaplo)) {
-                $this->hibauzenet[] = "Hiba a napló beszurásakor".$this->mysql->error;
+                $this->hibauzenet['mentesihiba'] = "Hiba a napló beszurásakor".$this->mysql->error;
                 return false;
             }
         }
@@ -182,8 +192,8 @@ class NaploLista
                     "'{$this->gyaktomb[$sajattomb->gyaksik[$i]->Name]}',".
                     "'{$sajattomb->gyaksik[$i]->Suly[$k]}', '{$sajattomb->gyaksik[$i]->Ism[$k]}', ".
                     "'{$sajattomb->gyaksik[$i]->IsmRogzitesIdopontja[$k]}')";
-                if(! ($this->mysqli->query($sqlSorozat))) {
-                    $this->hibauzenet[] = "Sikertelen sorozat tábla frissítés".$this->mysqli->error;
+                if(! ($this->mysql->query($sqlSorozat))) {
+                    $this->hibauzenet['mentesihiba'] = "Sikertelen sorozat tábla frissítés".$this->mysqli->error;
                     return false;
                 }
             }
