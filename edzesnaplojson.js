@@ -56,10 +56,10 @@ function Gyakorlat(name, suly, ism, megj) {
         this.Ism.push(ism0);
     }
     this.addIsmIdo = function(ismido) {
-        //var d = new Date(ismido);
+        var d = new Date(ismido);
         //console.log("object:: " + d);
-        ismido.setHours(ismido.getHours() - ismido.getTimezoneOffset() / 60);
-        this.IsmRogzitesIdopontja.push(ismido);
+        d.setHours(d.getHours() - d.getTimezoneOffset() / 60);
+        this.IsmRogzitesIdopontja.push(d);
     }
     this.setSuly = function(index, ujsuly) {
         this.Suly[index] = ujsuly;
@@ -610,7 +610,7 @@ function rogzitettIdoMegjelenito(gyaksik, megjelenitoId) {
             str += "<tr>";
             str += "<td>" + gyaksik[i].Name + "</td>";
             str += "<td>" +
-                (gyaksik[i].RogzitesIdopont.getHours() - 2) + ":" +
+                (gyaksik[i].RogzitesIdopont.getHours()) + ":" +
                 gyaksik[i].RogzitesIdopont.getMinutes() + ":" +
                 gyaksik[i].RogzitesIdopont.getSeconds() + "</td>";
             //var idopont = new Date(Date.parse(gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1]));

@@ -45,12 +45,13 @@
         case "DATUMLISTA" :
             if($eredmeny = $naploclass->getMentesiDatum(null)) {
                 $adat = $naploclass->getAdatokVissza();
-                //$adat = $naploclass->getTestHibaMentesiDatum(); a java logika jo lett
             } else {
                 $adat = $naploclass->getHibaUzenet();
             }
             break;
     }
+
+    $naploclass->closeMysqlCon();
     
     echo json_encode($adat);
     exit;

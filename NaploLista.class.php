@@ -103,8 +103,42 @@ class NaploLista
         }
     }
 
+    /**
+     * Feltölti a megadott felhasználó és mentési dátum szerinti napló note-ot
+     * @var $datum napló mentési dátuma
+     * @var $felhasznalo adott felhasználó idje, android id
+     */
     public function getNaploNote($felhasznalo, $datum) {
-        //todo
+        $pregt = '/^[0-9]{4}\-[0-9]{2}\-[0-9]{2} [0-9]{2}\:[0-9]{2}\:[0-9]{2}$/u';
+        $datum = $this->mysql->real_escape_string($datum);
+        if($felhasznalo == null) {
+            $felhasznalo = $this->tesztuser;
+        }
+
+        if($datum == "" || $datum == null) {
+            $this->hibauzenet['naplonotehiba'] = "Nincs dátum megadva";
+            return false;
+        }
+        
+        if(!preg_match($pregt, $datum)) {
+            $this->hibauzenet['naplonotehiba'] = "Nem megfelelő dátumformátumot adtál meg ".$datum;
+            return false;
+        }
+
+        $sql = "SELECT * FROM naplonote WHERE felhasznalo = '{$felhasznalo}' AND mentesidatum = '{$datum}'";
+        if ($e = $this->mysql->query($sql)) {
+            if ($e->num_rows > 0) {
+                $erre = $e->fetch_assoc();
+                $this->adatokvissza["naplonote"] = $erre["notenotes"];
+            } else {
+                $this->adatokvissza["naplonote"] = "Nincs megjegyzés hozzáfűzve a naplóhoz";
+            }
+        } else {
+            $this->adatokvissza["naplonotehiba"] = "Hiba történt a note lekérésében";
+        }
+
+        return true;
+
     }
 
     public function getMentesiDatum($felhasznalo) {
@@ -150,7 +184,8 @@ class NaploLista
         return $res;
     }
 
-    public function getTestHibaMentesiDatum() {
+    public function getTestHibaMentesiDatum() 
+    {
         $res['mentesidatumhiba'] = "Test hiba érkezett";
         return $res;
     }

@@ -8,22 +8,6 @@
 
     header("Content-Type: application/json;Accept-Charset: utf-8");
 
-    //alábbi if, csak a teszt kedvéért, java postot küld
-    //a küldött adatokbol, most test képpen küldöm be az adatbázisba
-    if(isset($_POST['adat']) && $_POST['adat'] != "") {
-        $adatkeres = json_decode($_POST['adat']);
-                
-        for($i=0; $i<count($adatkeres->gyaksik); $i++) {
-            $re[] = array(
-                "nev" => $adatkeres->gyaksik[$i]->nev,
-                "izomcsoport" => $adatkeres->gyaksik[$i]->izomcsoport
-            );
-        }
-        
-        echo json_encode($re);
-        exit;
-    }
-
     $kapcs = new mysqli(ADBSERVER,ADBUSER,ADBPASS,ADBDB);
     if($kapcs->connect_errno) {
         $jsonresult['hiba'] = "MySQL kapcsolódási hiba".$kapcs->connect_error;
