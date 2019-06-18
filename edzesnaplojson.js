@@ -56,14 +56,11 @@ function Gyakorlat(name, suly, ism, megj) {
         this.Ism.push(ism0);
     }
     this.addIsmIdo = function(ismido) {
-        var d;
-        if ((typeof ismido) == "object") {
-            d = ismido;
-        } else {
-            d = new Date(ismido);
-        }
-        //console.log("object:: " + d);
+        var d = new Date();
+
+        console.log("object:: " + d);
         d.setHours(d.getHours() - d.getTimezoneOffset() / 60);
+        console.log(d.toISOString());
         this.IsmRogzitesIdopontja.push(d);
     }
     this.setSuly = function(index, ujsuly) {
@@ -340,7 +337,7 @@ function addGyakorlat() {
     //evvel a függvénnyel adom hozzá a tömbömhöz az új gyakorlato
     var egygyak = new Gyakorlat($("#gyName").val(), $("#gySuly").val(),
         $("#gyIsm").val(), notes);
-    egygyak.addIsmIdo(new Date());
+    egygyak.addIsmIdo();
     gyakorlatok.push(egygyak);
 
     //a notes-ot csak egyszer elég hozzáadni, tehát hozzáadás után törlöm a mezőt
@@ -389,7 +386,8 @@ function gyakorlatEpitoFromMentes() {
             }
 
             for (var k = 0; k < mgyk[i].IsmRogzitesIdopontja.length; k++) {
-                egygyak.addIsmIdo(new Date(mgyk[i].IsmRogzitesIdopontja[k]));
+                //egygyak.addIsmIdo(new Date(mgyk[i].IsmRogzitesIdopontja[k]));
+                egygyak.addIsmIdo(mgyk[i].IsmRogzitesIdopontja[k]);
             }
 
             gyakorlatok.push(egygyak);
@@ -615,12 +613,13 @@ function rogzitettIdoMegjelenito(gyaksik, megjelenitoId) {
             str += "<tr>";
             str += "<td>" + gyaksik[i].Name + "</td>";
             str += "<td>" +
-                (gyaksik[i].RogzitesIdopont.getHours()) + ":" +
+                getHFE(gyaksik[i].RogzitesIdopont.getHours()) + ":" +
                 gyaksik[i].RogzitesIdopont.getMinutes() + ":" +
                 gyaksik[i].RogzitesIdopont.getSeconds() + "</td>";
             //var idopont = new Date(Date.parse(gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1]));
             var idopont = gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1];
-            str += "<td>" + (idopont.getHours() - 2) + ":" + idopont.getMinutes() + ":" + idopont.getSeconds() + "</td>";
+            str += "<td>" + getHFE(idopont.getHours()) + ":" + idopont.getMinutes() + ":" + idopont.getSeconds() + "</td>";
+            //str += "<td>" + gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1] + "</td>";
             str += "</tr>";
         }
         str += "</tbody>";
@@ -642,6 +641,18 @@ function rogzitettIdoMegjelenito(gyaksik, megjelenitoId) {
     }
 
     $(megjelenitoId).html(str);
+}
+
+//gwt hours from ejfel, vagyis 2 óra levonás a timezone miatt
+function getHFE(hours) {
+    console.log("hours: " + hours);
+    if (hours == "0" || hours == "00") {
+        return 22;
+    } else if (hours == "1" || hours == "01") {
+        return 23;
+    } else {
+        return 0;
+    }
 }
 
 function datumMegjelenito() {
