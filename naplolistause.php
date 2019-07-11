@@ -49,6 +49,15 @@
                 $adat = $naploclass->getHibaUzenet();
             }
             break;
+        case "DIAGRAMGET" :
+            if(isset($_POST["gyak_idd"]) && $_POST["gyak_idd"] != "") {
+                if($eredmeny = $naploclass->getGyakDiagramAdat(null, $_POST['gyak_idd'])) {
+                    $adat = $naploclass->getAdatokVissza();
+                } else {
+                    $adat = $naploclass->getHibaUzenet();
+                }
+            }
+            break;
     }
 
     $naploclass->closeMysqlCon();
