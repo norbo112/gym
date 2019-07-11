@@ -163,6 +163,65 @@ class NaploLista
         return true;
     }
 
+    //diagram adatok, az adott mentésben szereplő gyakorlatról
+    //mentési dátum és gyakorat azonosító alapján
+    public function getGyakDiagramAdat($felhasznalo, $gyakid) {
+        if($felhasznalo == null) {
+            $felhasznalo = $this->tesztuser;
+        }
+
+        if(!($this->getMentesiDatum($felhasznalo))) {
+            $this->hibauzenet['gyakdiagramhiba'] = "Sikertelen mentési dátum kérés";
+            return false;
+        }
+
+        $gyakidd = mysqli_real_escape_string($this->mysql, $gyakid);
+
+        if(!isset($this->hibauzenet['gyakdiagramhiba'])) {
+            for($i=0; $i<count($this->adatokvissza['mentesidatum']); $i++) {
+                $osszsuly = $this->getOsszsuly($felhasznalo, $this->adatokvissza['mentesidatum'][$i], $gyakidd);
+                $sorozat_sajat = $this->getSorIsmTomb($gyakidd, $this->adatokvissza['mentesidatum'][$i]);
+                
+                if(!isset($osszsuly["hiba"])) {
+                    //végeredményben ezt az adatot kell 
+                    //elküldenem a edzésnapló napiterv oldának
+                    $this->adatokvissza['resgyakdiagram'][] = array(
+                        "mentesidatum" => $this->adatokvissza['mentesidatum'][$i],
+                        "osszsuly" => $osszsuly["osszsuly"],
+                        "sorozat" => $sorozat_sajat
+                    );
+                } else {
+                    $this->hibauzenet['gyakdiagramhiba'] = "Gyakorlat lekérdezés hiba";
+                    return false;
+                }
+            }
+        } else {
+            $this->hibauzenet['gyakdiagramhiba'] = "Nem sikerült elkészíteni a diagramhoz tartozó adatokat";
+            return false;
+        }   
+        return true;
+    }
+
+    function getOsszsuly($felhasznalo, $mentesi, $gyakid) {
+        $res = array();
+        $adat = 0;
+
+        $sql = "SELECT suly, ism FROM sorozat WHERE felhasznalo = '{$felhasznalo}' AND ".
+            "mentesidatum = '{$mentesi}' AND gyak_id = '{$gyakid}'";
+
+        if(!($eredmeny = $this->mysql->query($sql))) {
+            $res["hiba"] = "Probléma a lekérdezésben: ".$this->mysql->error;
+        } else {
+            while($e = $eredmeny->fetch_assoc()) {
+                $adat += $e["suly"] * $e["ism"];
+            }
+
+            $res["osszsuly"] = $adat;
+        }
+
+        return $res;
+    }
+
     private function getSorIsmTomb($gyakorlat_id, $mentesi) 
     {
         $sql_sorozat = "SELECT suly,ism,ismidopont FROM sorozat WHERE mentesidatum = '{$mentesi}' AND gyak_id = '{$gyakorlat_id}'";

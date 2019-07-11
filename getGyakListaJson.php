@@ -36,7 +36,8 @@
 
         if($eredmeny = $kapcs->query($sql)) {
             while($sor = $eredmeny->fetch_assoc()) {
-                $jsonresult[] = array(
+				//org.json miatt változtattam itt, egyébbként $jsonresult[] volt simán
+                $jsonresult['gyaksik'][] = array(
                     "gyakId" => (int)$sor['gyak_id'],
                     "izomcsoport" => $izomcsoport[$i],
                     "gyakorlat" => $sor['megnevezes'],
