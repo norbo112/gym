@@ -84,7 +84,7 @@ class NaploLista
                 }
 
                 while ($tomb = $eredmeny->fetch_assoc()) {
-                    $sorismtomb = $this->getSorIsmTomb($tomb['azon'], $tomb['mentesidatum']);
+                    $sorismtomb = $this->getSorIsmTomb($tomb['azon'], $tomb['mentesidatum'], $felhasznalo);
                     if(isset($sorismtomb['hiba'])) {
                         $this->hibauzenet['naplolistahiba'] = "Hiba történt a sorozat lekérdezése közben ".$sorismtomb['hiba'];
                         return false;
@@ -141,12 +141,17 @@ class NaploLista
 
     }
 
-    public function getMentesiDatum($felhasznalo) {
+    public function getMentesiDatum($felhasznalo, $gyakid) {
         if($felhasznalo == null) {
             $felhasznalo = $this->tesztuser;
         }
 
-        $sql = "SELECT mentesidatum FROM naplo WHERE felhasznalo = '{$felhasznalo}' GROUP BY mentesidatum ORDER BY mentesidatum DESC";
+        if($gyakid != null) {
+            $sql = "SELECT mentesidatum FROM naplo WHERE felhasznalo = '{$felhasznalo}' AND gyak_id = '{$gyakid}' GROUP BY mentesidatum ORDER BY mentesidatum DESC";
+        } else {
+            $sql = "SELECT mentesidatum FROM naplo WHERE felhasznalo = '{$felhasznalo}' GROUP BY mentesidatum ORDER BY mentesidatum DESC";
+        }
+            
         if(!($eredmeny = $this->mysql->query($sql))) {
             $this->hibauzenet['mentesidatumhiba'] = " Hiba a lekérdezésben ".$this->mysqli->connect_error;
             error_log("hiba a lekérdezésben ".$this->mysqli->error);
@@ -170,35 +175,35 @@ class NaploLista
             $felhasznalo = $this->tesztuser;
         }
 
-        if(!($this->getMentesiDatum($felhasznalo))) {
+        if(!($this->getMentesiDatum($felhasznalo, $gyakid))) {
             $this->hibauzenet['gyakdiagramhiba'] = "Sikertelen mentési dátum kérés";
             return false;
         }
 
-        $gyakidd = mysqli_real_escape_string($this->mysql, $gyakid);
+        //$gyakidd = mysqli_real_escape_string($this->mysql, $gyakid);
 
-        if(!isset($this->hibauzenet['gyakdiagramhiba'])) {
-            for($i=0; $i<count($this->adatokvissza['mentesidatum']); $i++) {
-                $osszsuly = $this->getOsszsuly($felhasznalo, $this->adatokvissza['mentesidatum'][$i], $gyakidd);
-                $sorozat_sajat = $this->getSorIsmTomb($gyakidd, $this->adatokvissza['mentesidatum'][$i]);
-                
-                if(!isset($osszsuly["hiba"])) {
-                    //végeredményben ezt az adatot kell 
-                    //elküldenem a edzésnapló napiterv oldának
-                    $this->adatokvissza['resgyakdiagram'][] = array(
-                        "mentesidatum" => $this->adatokvissza['mentesidatum'][$i],
-                        "osszsuly" => $osszsuly["osszsuly"],
-                        "sorozat" => $sorozat_sajat
-                    );
-                } else {
-                    $this->hibauzenet['gyakdiagramhiba'] = "Gyakorlat lekérdezés hiba";
-                    return false;
-                }
+        for ($i = 0; $i < count($this->adatokvissza['mentesidatum']); $i++) {
+            
+            
+            $sorozat_sajat = $this->getSorIsmTomb($gyakid, $this->adatokvissza['mentesidatum'][$i], $felhasznalo);
+            if(isset($sorozat_sajat['hiba'])) {
+                $this->hibauzenet['gyakdiagramhiba'] = "Sorozat lekérdezés hiba \n" . $sorozat_sajat['hiba'];
+                return false;
             }
-        } else {
-            $this->hibauzenet['gyakdiagramhiba'] = "Nem sikerült elkészíteni a diagramhoz tartozó adatokat";
-            return false;
-        }   
+
+            $osszsuly = $this->getOsszsuly($felhasznalo, $this->adatokvissza['mentesidatum'][$i], $gyakid);
+            if (isset($osszsuly["hiba"])) {
+                $this->hibauzenet['gyakdiagramhiba'] = "Összsúly lekérdezés hiba \n" . $osszsuly['hiba'];
+                return false;
+            }
+
+            $this->adatokvissza['resgyakdiagram'][] = array(
+                "mentesidatum" => $this->adatokvissza['mentesidatum'][$i],
+                "osszsuly" => $osszsuly["osszsuly"],
+                "sorozat" => $sorozat_sajat
+            );
+        }
+
         return true;
     }
 
@@ -222,9 +227,14 @@ class NaploLista
         return $res;
     }
 
-    private function getSorIsmTomb($gyakorlat_id, $mentesi) 
+    private function getSorIsmTomb($gyakorlat_id, $mentesi, $felhasznalo) 
     {
-        $sql_sorozat = "SELECT suly,ism,ismidopont FROM sorozat WHERE mentesidatum = '{$mentesi}' AND gyak_id = '{$gyakorlat_id}'";
+        if($felhasznalo == null) {
+            $felhasznalo = $this->tesztuser;
+        }
+
+        $sql_sorozat = "SELECT suly,ism,ismidopont FROM sorozat WHERE ".
+            "felhasznalo = '{$felhasznalo}' AND mentesidatum = '{$mentesi}' AND gyak_id = '{$gyakorlat_id}'";
         $res = array();
 
         if(!($eredmeny_sor = $this->mysql->query($sql_sorozat))) {
@@ -232,7 +242,6 @@ class NaploLista
             error_log("Hiba a sorozat lekérdezésben".$this->mysql->connect_error);
         } else if($eredmeny_sor->num_rows == 0) {
             $res["hiba"] = "Üres a sorozat tároló, vagy az adatok nem léteznek";
-            error_log("Üres a sorozat tároló, vagy az adatok nem léteznek".$this->mysqli->connect_error);
         } else {
             while($tomb = $eredmeny_sor->fetch_assoc()) {
                 $res["Suly"][] = $tomb['suly'];

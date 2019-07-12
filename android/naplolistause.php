@@ -43,7 +43,7 @@
             }
             break;
         case "DATUMLISTA" :
-            if($eredmeny = $naploclass->getMentesiDatum(null)) {
+            if($eredmeny = $naploclass->getMentesiDatum(null, null)) {
                 $adat = $naploclass->getAdatokVissza();
             } else {
                 $adat = $naploclass->getHibaUzenet();

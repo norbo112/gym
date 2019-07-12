@@ -613,12 +613,12 @@ function rogzitettIdoMegjelenito(gyaksik, megjelenitoId) {
             str += "<tr>";
             str += "<td>" + gyaksik[i].Name + "</td>";
             str += "<td>" +
-                getHFE(gyaksik[i].RogzitesIdopont.getHours()) + ":" +
+                getHFE(gyaksik[i].RogzitesIdopont.getHours() - 2) + ":" +
                 gyaksik[i].RogzitesIdopont.getMinutes() + ":" +
                 gyaksik[i].RogzitesIdopont.getSeconds() + "</td>";
             //var idopont = new Date(Date.parse(gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1]));
             var idopont = gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1];
-            str += "<td>" + getHFE(idopont.getHours()) + ":" + idopont.getMinutes() + ":" + idopont.getSeconds() + "</td>";
+            str += "<td>" + getHFE(idopont.getHours() - 2) + ":" + idopont.getMinutes() + ":" + idopont.getSeconds() + "</td>";
             //str += "<td>" + gyaksik[i].IsmRogzitesIdopontja[gyaksik[i].IsmRogzitesIdopontja.length - 1] + "</td>";
             str += "</tr>";
         }
@@ -651,7 +651,7 @@ function getHFE(hours) {
     } else if (hours == "1" || hours == "01") {
         return 23;
     } else {
-        return 0;
+        return hours;
     }
 }
 
