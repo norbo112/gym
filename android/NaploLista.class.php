@@ -1,4 +1,5 @@
 <?php
+    require_once("UserManage.class.php");
 /**
  * NaploLista osztály, mentés és betöltésre hálozaton keresztül
  * legföbbképp a java nyelben irt json adatokat dolgozza fel
@@ -45,6 +46,14 @@ class NaploLista
         }
 
         return true;
+    }
+
+    public function getMysql() {
+        return $this->mysql;
+    }
+
+    public function setTestUser($testuser) {
+        $this->tesztuser = $testuser;
     }
 
     public function getNaploLista($vandatum, $felhasznalo)
@@ -158,7 +167,7 @@ class NaploLista
             return false;
         } else {
             if($eredmeny->num_rows == 0) {
-                $this->hibauzenet['mentesidatumhiba'] = "Nincsenek mentett naplók a megadott felhasználóhoz: ".$this->mysql->error;
+                $this->hibauzenet['mentesidatumhiba'] = "Nincsenek mentett naplók a megadott felhasználóhoz: ".$felhasznalo;
                 return false;
             }
             while($tomb = $eredmeny->fetch_assoc()) {
@@ -351,6 +360,40 @@ class NaploLista
         }
 
         return true;
+    }
+
+    /**
+     * Adatok törlése
+     */
+    public function delNaplo($felhasznalo, $mentesidatum)
+    {
+        $deldate = $this->mysql->real_escape_string($mentesidatum);
+        if(!UserManage::checkUser($felhasznalo)) {
+            $this->hibauzenet['falseuser'] = "Nem létezik a felhasználó";
+            return false;
+        }
+
+        $sql = "DELETE FROM naplo WHERE mentesidatum = '{$deldate}' AND felhasznalo = '{$felhasznalo}'";
+        if(!($eredmeny = $this->mysql->query($sql))) {
+            $this->hibauzenet["hiba"] = " Hiba a lekérdezésben ".$this->mysql->error;
+            return false;
+        } else {
+            if($this->mysql->affected_rows != 0) {
+                $this->adatokvissza["naplo_torolve"] = $this->mysql->affected_rows." napló rekord törölve";
+                $sqlsorozat = "DELETE FROM sorozat WHERE mentesidatum = '{$deldate}' AND felhasznalo = '{$felhasznalo}'";
+                if($this->mysql->query($sqlsorozat)) {
+                    $this->adatokvissza['sorozat_torolve'] = "A naplóhoz tartozó sorozatok törölve";
+                } else {
+                    $this->hibauzenet['hiba'] = "Sikertelen sorozat törtlés";
+                    return false;
+                }
+
+                return true;
+            } else {
+                $this->hibauzenet['hiba'] = "Nem sikerült törölni az adatokat";
+                return false;
+            }
+        }
     }
 
     public function closeMysqlCon() {

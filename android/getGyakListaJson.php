@@ -1,5 +1,5 @@
 <?php
-    require_once("adbcuccok.inc.php");
+    require_once("../adbcuccok.inc.php");
 
     $izomcsoport = array();
     $gyakorlatok = array();
@@ -11,6 +11,7 @@
     $kapcs = new mysqli(ADBSERVER,ADBUSER,ADBPASS,ADBDB);
     if($kapcs->connect_errno) {
         $jsonresult['hiba'] = "MySQL kapcsolódási hiba".$kapcs->connect_error;
+        echo json_encode($jsonresult);
         exit;
     }
 
@@ -22,6 +23,7 @@
     $eredmeny = $kapcs->query($sql);
     if(!$eredmeny) {
         $jsonresult['hiba'] = "Hiba a lekérdezésben";
+        echo json_encode($jsonresult);
         exit;
     }
 
