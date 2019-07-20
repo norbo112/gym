@@ -1,5 +1,8 @@
 <?php
     require_once("UserManage.class.php");
+    if(!isset($_SESSION)) {
+        session_start();
+    }
 /**
  * NaploLista osztály, mentés és betöltésre hálozaton keresztül
  * legföbbképp a java nyelben irt json adatokat dolgozza fel

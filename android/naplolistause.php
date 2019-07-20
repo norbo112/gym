@@ -4,6 +4,10 @@
     require_once("UserManage.class.php");
     header("Content-Type: application/json; Accept-Charset: UTF-8");
 
+    if(!isset($_SESSION)) {
+        session_start();
+    }
+
     //majd egyszer android id röggzítése, ellenőrzése,
     //webes felhasználó összekötése az andorid eszközzel
     //jelenleg csak teszt user lesz...

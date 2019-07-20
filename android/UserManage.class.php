@@ -1,6 +1,9 @@
 <?php
     //require_once("../adbcuccok.inc.php");
     require_once("NaploLista.class.php");
+    if(!isset($_SESSION)) {
+        session_start();
+    }
 
     /**
      * Felhasználót regisztráló, kezelő osztály, 
@@ -20,6 +23,8 @@
         private $longitude = null;
         private $latitude = null;
         private $altitude = null;
+        //ha webes userrol van szó
+
 
         public function __construct($pNaploList)
         {
@@ -126,7 +131,7 @@
             return $this->hibauzenet;
         }
 
-        public static function checkUser($felhasznalo, $webuser) {
+        public function checkUser($felhasznalo, $webuser) {
             if($felhasznalo == null) {
                 return false;
             }
@@ -142,17 +147,19 @@
             $biztFelh = $mysql->real_escape_string($felhasznalo);
 
             if($webuser != null) {
-                $sql = "SELECT knev, email, jelszo FROM felhasznalo WHERE email = '{$biztFelh}'";
-                $vajon = isset($webuser['email']) && $webuser['emal'] != "";
+                $sql = "SELECT email FROM felhasznalo WHERE email = '{$biztFelh}'";
             } else {
                 $sql = "SELECT au_androidID FROM androiduser WHERE au_androidID = '{$felhasznalo}'";
-                $vajon = isset($webuser['au_androidID']) && $webuser['au_androidID'] != "";
             }
-
-
 
             if($usercheck = $mysql->query($sql)) {
                 $user = $usercheck->fetch_assoc();
+                if($webuser != null) {
+                    $vajon = isset($user['email']) && $user['emal'] != "";
+                } else {
+                    $vajon = isset($user['au_androidID']) && $user['au_androidID'] != "";
+                }
+
                 if($vajon) {
                     return true;
                 }
@@ -160,6 +167,43 @@
 
             $mysql->close();
             return false;
+        }
+
+        public function getWebUser($felhasznalo, $jelszo) {
+            if(!$this->checkUser($felhasznalo, "van")) {
+                $this->hibauzenet['GETUSER_HIBA'] = "Nem létezik a felhasználó";
+                return false;
+            }
+            $mysql = new mysqli(ADBSERVER, ADBUSER, ADBPASS, ADBDB);
+            if($mysql->connect_errno) {
+                $this->hibauzenet['GETUSER_HIBA'] = "Kapcsolódási hiba: ".$mysql->connect_error;
+                return false;
+            }
+            $mysql->query("SET NAMES UTF8");
+            $mysql->query("SET CHARACTER SET UTF8");
+
+            $biztFelh = $mysql->real_escape_string($felhasznalo);
+            $biztJelszo = $mysql->real_escape_string($jelszo);
+
+            $sql = "SELECT knev, email, jelszo FROM felhasznalo WHERE email = '{$biztFelh}'";
+            $eredmeny = $mysql->query($sql);
+            if(!$eredmeny) {
+                $this->hibauzenet['GETUSER_HIBA'] = "Lekérdezés hiba: ".$mysql->connect_error;
+                return false;
+            }
+
+            $sor = $eredmeny->fetch_assoc();
+            $dbjelszo = $sor['jelszo'];
+
+            if(!password_verify($biztJelszo, $dbjelszo)) {
+                $this->hibauzenet['GETUSER_HIBA_PASS'] = "Nem egyezik a jelszó";
+                return false;
+            }
+
+            setcookie("felhasznalo",$sor['email']);
+            setcookie("nevem", $sor['knev']);
+            $this->eredmenyvissza['GETUSER_OK'] = "Sikeres belépés!";
+            return true;
         }
     }
 ?>
