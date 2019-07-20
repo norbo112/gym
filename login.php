@@ -56,9 +56,4 @@
 
     setcookie("felhasznalo",$sor['email']);
     setcookie("nevem", $sor['knev']);
-
-    /*$_SESSION['felhasznalo'] = $sor['email'];
-    $_SESSION['nevem'] = $sor['knev'];*/
-
-    //echo $sor['knev']." Üdv az Edzésnaplóban!";
 ?>
