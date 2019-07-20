@@ -292,6 +292,7 @@ class NaploLista
                     "'{$gyakmegjegyzes}') ";
             if(!$this->mysql->query($sqlNaplo)) {
                 $this->hibauzenet['mentesihiba'] = "Hiba a napló beszurásakor".$this->mysql->error;
+                error_log("Hiba a napló beszúrásakor: ".$this->mysql->error);
                 return false;
             }
         }
@@ -306,10 +307,13 @@ class NaploLista
                     "'{$sajattomb->gyaksik[$i]->IsmRogzitesIdopontja[$k]}')";
                 if(! ($this->mysql->query($sqlSorozat))) {
                     $this->hibauzenet['mentesihiba'] = "Sikertelen sorozat tábla frissítés".$this->mysqli->error;
+                    error_log("Hiba a sorozat beszúrásakor: ".$this->mysql->error);
                     return false;
                 }
             }
         }
+
+        $this->adatokvissza['siker'] = "Sikeres mentés!";
         return true;
     }
 

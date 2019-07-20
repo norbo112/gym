@@ -32,7 +32,7 @@
                 if(isset($_POST['userid']) && $_POST['userid'] != "") {
                     $user = trim(htmlspecialchars($_POST['userid']));
                     if($eredmeny = $naploclass->mentes($user,null,json_decode($_POST['job']))) {
-                        $adat["siker"] = "Sikeres mentés!";
+                        $adat = $naploclass->getAdatokVissza();
                     } else {
                         $adat = $naploclass->getHibaUzenet();
                     }
@@ -43,7 +43,6 @@
                         $adat = $naploclass->getHibaUzenet();
                     }
                 }
-                
             }
             break;
         case "BEOLVAS":
@@ -128,6 +127,19 @@
                     }
             }
             break;
+        default :
+            $adat['KERESHIBA'] = "Nem érkezzet adat. ".$keres;
+            break;
+    }
+
+    function setErrorCode($msg) {
+        $code = http_response_code(406);
+        $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
+        header($protocol.' '.$code.' '.$msg);
+        $this->naploclass->closeMysqlCon();
+        unset($usermanageclass);
+        unset($naploclass);
+        exit;
     }
 
     $naploclass->closeMysqlCon();
