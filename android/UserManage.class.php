@@ -126,21 +126,34 @@
             return $this->hibauzenet;
         }
 
-        public static function checkUser($felhasznalo) {
+        public static function checkUser($felhasznalo, $webuser) {
             if($felhasznalo == null) {
                 return false;
             }
 
-            $sql = "SELECT au_androidID FROM androiduser WHERE au_androidID = '{$felhasznalo}'";
             $mysql = new mysqli(ADBSERVER, ADBUSER, ADBPASS, ADBDB);
             if($mysql->connect_errno) {
                 error_log("checkUser: Kapcsolódási hiba".$mysql->connect_error);
                 return false;
             }
+            $mysql->query("SET NAMES UTF8");
+            $mysql->query("SET CHARACTER SET UTF8");
+
+            $biztFelh = $mysql->real_escape_string($felhasznalo);
+
+            if($webuser != null) {
+                $sql = "SELECT knev, email, jelszo FROM felhasznalo WHERE email = '{$biztFelh}'";
+                $vajon = isset($webuser['email']) && $webuser['emal'] != "";
+            } else {
+                $sql = "SELECT au_androidID FROM androiduser WHERE au_androidID = '{$felhasznalo}'";
+                $vajon = isset($webuser['au_androidID']) && $webuser['au_androidID'] != "";
+            }
+
+
 
             if($usercheck = $mysql->query($sql)) {
                 $user = $usercheck->fetch_assoc();
-                if(isset($user['au_androidID']) && $user['au_androidID'] != "") {
+                if($vajon) {
                     return true;
                 }
             }
