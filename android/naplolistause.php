@@ -2,11 +2,13 @@
     require_once("../adbcuccok.inc.php");
     require_once("NaploLista.class.php");
     require_once("UserManage.class.php");
-    header("Content-Type: application/json; Accept-Charset: UTF-8");
 
     if(!isset($_SESSION)) {
         session_start();
     }
+
+    header("Content-Type: application/json; Accept-Charset: UTF-8");
+
 
     //majd egyszer android id röggzítése, ellenőrzése,
     //webes felhasználó összekötése az andorid eszközzel
@@ -129,6 +131,16 @@
                     } else {
                         $adat = $naploclass->getHibaUzenet();
                     }
+            }
+            break;
+        case "GETWEBUSER" :
+            if((isset($_POST['useraid']) && $_POST['useraid'] != "") &&
+                (isset($_POST['pw']) && $_POST['pw'] != "") ) {
+                if($usermanageclass->getWebUser($_POST['useraid'], $_POST['pw'])) {
+                    $adat = $usermanageclass->getEredmenyVissza();
+                } else {
+                    $adat = $usermanageclass->getHibaUzenet();
+                }
             }
             break;
         default :

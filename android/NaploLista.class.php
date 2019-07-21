@@ -375,7 +375,7 @@ class NaploLista
     public function delNaplo($felhasznalo, $mentesidatum)
     {
         $deldate = $this->mysql->real_escape_string($mentesidatum);
-        if(!UserManage::checkUser($felhasznalo)) {
+        if(!UserManage::checkUser($felhasznalo, "ok")) {
             $this->hibauzenet['falseuser'] = "Nem létezik a felhasználó";
             return false;
         }

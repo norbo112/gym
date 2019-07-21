@@ -155,7 +155,7 @@
             if($usercheck = $mysql->query($sql)) {
                 $user = $usercheck->fetch_assoc();
                 if($webuser != null) {
-                    $vajon = isset($user['email']) && $user['emal'] != "";
+                    $vajon = isset($user['email']) && $user['email'] != "";
                 } else {
                     $vajon = isset($user['au_androidID']) && $user['au_androidID'] != "";
                 }
@@ -170,6 +170,11 @@
         }
 
         public function getWebUser($felhasznalo, $jelszo) {
+            if(isset($_COOKIE['nevem']) && $_COOKIE['nevem'] != "") {
+                $this->hibauzenet['USERLIVE'] = "Már beléptél a rendszerbe";
+                return false;
+            }
+
             if(!$this->checkUser($felhasznalo, "van")) {
                 $this->hibauzenet['GETUSER_HIBA'] = "Nem létezik a felhasználó";
                 return false;
@@ -185,7 +190,7 @@
             $biztFelh = $mysql->real_escape_string($felhasznalo);
             $biztJelszo = $mysql->real_escape_string($jelszo);
 
-            $sql = "SELECT knev, email, jelszo FROM felhasznalo WHERE email = '{$biztFelh}'";
+            $sql = "SELECT * FROM felhasznalo WHERE email = '{$biztFelh}'";
             $eredmeny = $mysql->query($sql);
             if(!$eredmeny) {
                 $this->hibauzenet['GETUSER_HIBA'] = "Lekérdezés hiba: ".$mysql->connect_error;
@@ -200,10 +205,35 @@
                 return false;
             }
 
+            //itt elkészítem a visszaküldendő felhasználó adatokat
+            //amibol az AndroidUser-t előállítom
+            $this->eredmenyvissza['AndroidUser'] = array(
+                "azonosito"=>$sor["azonosito"],
+                    "vnev"=>$sor["vnev"],
+                    "knev"=>$sor["knev"],
+                    "email"=>$sor["email"],
+                    "megye"=>$sor["megye"],
+                    "varos"=>$sor["varos"],
+                    "cim"=>$sor["cim"],
+                    "iranyitoszam"=>$sor["iranyitoszam"],
+                    "suly"=>$sor["suly"],
+                    "maxfek"=>$sor["maxfek"],
+                    "maxgugg"=>$sor["maxgugg"],
+                    "letrejott"=>$sor["letrejott"],
+                    "maxfelhuz"=>$sor["maxfelhuz"],
+                    "magassag"=>$sor["magassag"],
+                    "genre"=>$sor["genre"],
+                    "au_loc_long"=>$sor["au_loc_long"],
+                    "au_loc_lat"=>$sor["au_loc_lat"],
+                    "au_loc_alt"=>$sor["au_loc_alt"]    
+            );
+            
+            
+            $this->eredmenyvissza['GETUSER_OK'] = "Sikeres belépés!";
+            
             setcookie("felhasznalo",$sor['email']);
             setcookie("nevem", $sor['knev']);
-            $this->eredmenyvissza['GETUSER_OK'] = "Sikeres belépés!";
+
             return true;
         }
     }
-?>
