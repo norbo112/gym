@@ -15,14 +15,6 @@
         private $hibauzenet = null;
         private $eredmenyvissza = null;
         private $mysqli = null;
-
-        //saját user adatok, amiket menteni kell
-        private $nev = null;
-        private $randomcode = null;
-        private $androidid = null;
-        private $longitude = null;
-        private $latitude = null;
-        private $altitude = null;
         //ha webes userrol van szó
 
 
@@ -57,13 +49,6 @@
         }*/
 
         public function saveUser($jsonobj) {
-            $this->nev = $jsonobj->au_nev;
-            $this->randomcode = $jsonobj->au_randomcode;
-            $this->androidid = $jsonobj->au_androidid;
-            $this->longitude = $jsonobj->au_long;
-            $this->latitude = $jsonobj->au_lat;
-            $this->altitude = $jsonobj->au_alt;
-
             //hiba ellenörzéstől most eltekuntek
             //ellenörzés létezik -e a felhasználó
             $sql = "SELECT au_androidID FROM androiduser WHERE au_androidID = '{$this->androidid}'";
@@ -76,19 +61,35 @@
                 }
             }
 
-            $e_nev = mysqli_real_escape_string($this->mysqli, $this->nev);
-            $e_rcode = mysqli_real_escape_string($this->mysqli, $this->randomcode);
-            $e_aid = mysqli_real_escape_string($this->mysqli, $this->androidid);
-            $e_lat = mysqli_real_escape_string($this->mysqli, $this->latitude);
-            $e_long = mysqli_real_escape_string($this->mysqli, $this->longitude);
-            $e_alt = mysqli_real_escape_string($this->mysqli, $this->altitude);
+            $vezetekNev = mysqli_real_escape_string($this->mysqli, $jsonobj->au_vnev);
+            $keresztNev = mysqli_real_escape_string($this->mysqli, $jsonobj->au_knev);
+            $email = mysqli_real_escape_string($this->mysqli, $jsonobj->au_email);
+            $jelszo = mysqli_real_escape_string($this->mysqli, $jsonobj->au_jelszo);
+            $orzag = mysqli_real_escape_string($this->mysqli, $jsonobj->au_orszag);
+            $megye = mysqli_real_escape_string($this->mysqli, $jsonobj->au_megye);
+            $varos = mysqli_real_escape_string($this->mysqli, $jsonobj->au_varos);
+            $cim = mysqli_real_escape_string($this->mysqli, $jsonobj->au_cim);
+            $iranyitoszam = mysqli_real_escape_string($this->mysqli, $jsonobj->au_irsz);
+            $suly = mysqli_real_escape_string($this->mysqli, $jsonobj->au_suly);
+            $magassag = mysqli_real_escape_string($this->mysqli, $jsonobj->au_magas);
+            $maxfek = mysqli_real_escape_string($this->mysqli, $jsonobj->au_mfek);
+            $maxgugg = mysqli_real_escape_string($this->mysqli, $jsonobj->au_mgugg);
+            $felhuzocsucs = mysqli_real_escape_string($this->mysqli, $jsonobj->au_mfelh);
+            $genre = mysqli_real_escape_string($this->mysqli, $jsonobj->au_genre);
+            $latlong = mysqli_real_escape_string($this->mysqli, $jsonobj->au_long);
+            $latlat = mysqli_real_escape_string($this->mysqli, $jsonobj->au_lat);
+            $latalt = mysqli_real_escape_string($this->mysqli, $jsonobj->au_alt);
+            $aid = mysqli_real_escape_string($this->mysqli, $jsonobj->au_androidid);
 
-            $sql = "INSERT INTO androiduser (au_Nev, au_randomCode, au_androidID, au_loc_lat, au_loc_long, au_loc_alt) ".
-                    "VALUES ('{$e_nev}', '{$e_rcode}', '{$e_aid}', '{$e_lat}', '{$e_long}', '{$e_alt}')";
+            $sql = "INSERT INTO felhasznalo (vnev,knev,email,jelszo,orszag,megye,varos,cim,iranyitoszam,suly,maxfek,maxgugg,letrejott,maxfelhuz, magassag, genre,".
+                      "au_loc_long, au_loc_lat, au_loc_alt, androidId)".
+                      " VALUES ('{$vezetekNev}','{$keresztNev}','{$email}','{$jelszo}','{$orzag}','{$megye}','{$varos}','{$cim}','{$iranyitoszam}'".
+                      ",'{$suly}','{$maxfek}','{$maxgugg}',NOW(),'{$felhuzocsucs}','{$magassag}','{$genre}',".
+                      "'{$latlong}', '{$latlat}', '{$latalt}', '{$aid}')";
 
             if ($this->mysqli->query($sql)) {
                 $azon = $this->mysqli->insert_id;
-                $this->eredmenyvissza['AU_sikeres'] = "Android {$e_aid} fiók beszúrva {$azon} azonosítóval";
+                $this->eredmenyvissza['AU_sikeres'] = "Felhasználó {$email}, {$aid} fiók felvéve";
                 return true;
             } else {
                 error_log("Android beszúrása sikertelen" . $this->mysqli->error);
@@ -171,7 +172,7 @@
 
         public function getWebUser($felhasznalo, $jelszo) {
             if(isset($_COOKIE['nevem']) && $_COOKIE['nevem'] != "") {
-                $this->hibauzenet['USERLIVE'] = "Már beléptél a rendszerbe";
+                $this->hibauzenet['USERLIVE'] = "Már beléptél a rendszerbe ".$_COOKIE['nevem'];
                 return false;
             }
 
@@ -209,30 +210,32 @@
             //amibol az AndroidUser-t előállítom
             $this->eredmenyvissza['AndroidUser'] = array(
                 "azonosito"=>$sor["azonosito"],
-                    "vnev"=>$sor["vnev"],
-                    "knev"=>$sor["knev"],
-                    "email"=>$sor["email"],
-                    "megye"=>$sor["megye"],
-                    "varos"=>$sor["varos"],
-                    "cim"=>$sor["cim"],
-                    "iranyitoszam"=>$sor["iranyitoszam"],
-                    "suly"=>$sor["suly"],
-                    "maxfek"=>$sor["maxfek"],
-                    "maxgugg"=>$sor["maxgugg"],
-                    "letrejott"=>$sor["letrejott"],
-                    "maxfelhuz"=>$sor["maxfelhuz"],
-                    "magassag"=>$sor["magassag"],
-                    "genre"=>$sor["genre"],
-                    "au_loc_long"=>$sor["au_loc_long"],
-                    "au_loc_lat"=>$sor["au_loc_lat"],
-                    "au_loc_alt"=>$sor["au_loc_alt"]    
+                "vnev"=>$sor["vnev"],
+                "knev"=>$sor["knev"],
+                "email"=>$sor["email"],
+                "orszag"=>$sor['orszag'],
+                "megye"=>$sor["megye"],
+                "varos"=>$sor["varos"],
+                "cim"=>$sor["cim"],
+                "iranyitoszam"=>$sor["iranyitoszam"],
+                "suly"=>$sor["suly"],
+                "maxfek"=>$sor["maxfek"],
+                "maxgugg"=>$sor["maxgugg"],
+                "letrejott"=>$sor["letrejott"],
+                "maxfelhuz"=>$sor["maxfelhuz"],
+                "magassag"=>$sor["magassag"],
+                "genre"=>$sor["genre"],
+                "au_loc_long"=>$sor["au_loc_long"],
+                "au_loc_lat"=>$sor["au_loc_lat"],
+                "au_loc_alt"=>$sor["au_loc_alt"],
+                "androidId"=>$sor['androidId']
             );
             
             
             $this->eredmenyvissza['GETUSER_OK'] = "Sikeres belépés!";
             
-            setcookie("felhasznalo",$sor['email']);
-            setcookie("nevem", $sor['knev']);
+            setcookie("felhasznalo",$sor['email'], time()+60*60*3);
+            setcookie("nevem", $sor['knev'], time()+60*60*3);
 
             return true;
         }
