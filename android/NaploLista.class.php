@@ -403,6 +403,38 @@ class NaploLista
         }
     }
 
+    public function getLocationListFromUsers($felhasznalo) {
+        if(!UserManage::checkUser($felhasznalo, "ok")) {
+            $this->hibauzenet['locations_falseuser'] = "Nem létezik a felhasználó";
+            return false;
+        }
+
+        //egyébb ellenőrzések nélkül
+        $sql = "SELECT vnev, knev, email, au_loc_long, au_loc_lat, suly, maxfek, maxgugg, maxfelhuz,magassag, avatar FROM felhasznalo";
+        if($eredmeny = $this->mysql->query($sql)) {
+            while($sor = $eredmeny->fetch_assoc()) {
+                $this->adatokvissza['locations'][] = array(
+                    "vnev"=>$sor['vnev'],
+                    "knev"=>$sor['knev'],
+                    "long"=>$sor['au_loc_long'],
+                    "lat"=>$sor['au_loc_lat'],
+                    "email"=>$sor['email'],
+                    //Személyes általános adatok az edzésről, melyek megjelennek a marker címében
+                    "suly"=>$sor["suly"],
+                    "maxfek"=>$sor["maxfek"],
+                    "maxgugg"=>$sor["maxgugg"],
+                    "maxfelhuz"=>$sor["maxfelhuz"],
+                    "magassag"=>$sor["magassag"],
+                    "avatar"=>$sor['avatar']
+                );
+            }
+            return true;
+        }
+
+        $this->hibauzenet['locations_unknown'] = "Hiba történt!";
+        return false;
+    }
+
     public function closeMysqlCon() {
         $this->mysql->close();
         $this->mysql = null;

@@ -39,31 +39,25 @@
             return true;
         }
 
-        /*public function loadFromJson($jsonobj) {
-            $this->nev = $jsonobj->au_nev;
-            $this->randomcode = $jsonobj->au_randomcode;
-            $this->androidid = $jsonobj->au_androidid;
-            $this->longitude = $jsonobj->au_long;
-            $this->latitude = $jsonobj->au_lat;
-            $this->altitude = $jsonobj->au_alt;
-        }*/
-
         public function saveUser($jsonobj) {
             //hiba ellenörzéstől most eltekuntek
             //ellenörzés létezik -e a felhasználó
-            $sql = "SELECT au_androidID FROM androiduser WHERE au_androidID = '{$this->androidid}'";
+            $email = mysqli_real_escape_string($this->mysqli, $jsonobj->au_email);
+            $sql = "SELECT email FROM felhasznalo WHERE email = '{$email}'";
 
             if($usercheck = $this->mysqli->query($sql)) {
                 $user = $usercheck->fetch_assoc();
-                if(isset($user['au_androidID']) && $user['au_androidID'] != "") {
-                    $this->hibauzenet['AU_letezik'] = "Már regisztráltál evvel a készülékkel";
+                if(isset($user['email']) && $user['email'] != "") {
+                    $this->hibauzenet['AU_letezik'] = "Már regisztrálva vagy ezen az email címen (".$email.")";
                     return false;
                 }
             }
 
+            //a bevitel ellenőrzésétt majd itt is elkell végeznem
+
             $vezetekNev = mysqli_real_escape_string($this->mysqli, $jsonobj->au_vnev);
             $keresztNev = mysqli_real_escape_string($this->mysqli, $jsonobj->au_knev);
-            $email = mysqli_real_escape_string($this->mysqli, $jsonobj->au_email);
+            
             $jelszo = mysqli_real_escape_string($this->mysqli, $jsonobj->au_jelszo);
             $orzag = mysqli_real_escape_string($this->mysqli, $jsonobj->au_orszag);
             $megye = mysqli_real_escape_string($this->mysqli, $jsonobj->au_megye);
@@ -79,7 +73,11 @@
             $latlong = mysqli_real_escape_string($this->mysqli, $jsonobj->au_long);
             $latlat = mysqli_real_escape_string($this->mysqli, $jsonobj->au_lat);
             $latalt = mysqli_real_escape_string($this->mysqli, $jsonobj->au_alt);
-            $aid = mysqli_real_escape_string($this->mysqli, $jsonobj->au_androidid);
+            $aid = mysqli_real_escape_string($this->mysqli, $jsonobj->au_Au_id);
+
+            if(strlen($latlong) == 0) {$latlong = "0.00";}
+            if(strlen($latlat) == 0) {$latlat = "0.00";}
+            if(strlen($latalt) == 0) {$latalt = "0.00";}
 
             $sql = "INSERT INTO felhasznalo (vnev,knev,email,jelszo,orszag,megye,varos,cim,iranyitoszam,suly,maxfek,maxgugg,letrejott,maxfelhuz, magassag, genre,".
                       "au_loc_long, au_loc_lat, au_loc_alt, androidId)".
@@ -228,7 +226,8 @@
                 "au_loc_long"=>$sor["au_loc_long"],
                 "au_loc_lat"=>$sor["au_loc_lat"],
                 "au_loc_alt"=>$sor["au_loc_alt"],
-                "androidId"=>$sor['androidId']
+                "androidId"=>$sor['androidId'],
+                "avatar"=>$sor['avatar']
             );
             
             
@@ -239,4 +238,74 @@
 
             return true;
         }
+
+        public function editUser($jsonobj) {
+            $felh = $this->mysqli->real_escape_string($jsonobj->au_email);
+            if(!$this->checkUser($felh, "van")) {
+                $this->hibauzenet['GETUSER_HIBA'] = "Nem létezik a felhasználó";
+                return false;
+            }
+
+            $this->mysqli->query("SET NAMES 'UTF8'");
+            $this->mysqli->query("SET CHARACTER SET 'UTF8'");
+
+            //jelszó ellenőrzés is kellene
+            if(! $this->chechUserPass($this->mysqli, $felh, $jsonobj->au_jelszo)) {
+                return false;
+            }
+
+            if(isset($jsonobj->au_loc_lat) && $jsonobj->au_loc_lat == "" ||
+                isset($jsonobj->au_loc_long) && $jsonobj->au_loc_long == "" ||
+                isset($jsonobj->au_loc_alt) && $jsonobj->au_loc_alt == "" ) {
+                $sql = "UPDATE felhasznalo SET ".
+                    "orszag='{$jsonobj->au_orszag}',".
+                    "megye='{$jsonobj->au_megye}',varos='{$jsonobj->au_varos}',cim='{$jsonobj->au_cim}',iranyitoszam='{$jsonobj->au_irsz}',".
+                    "suly='{$jsonobj->au_suly}',maxfek='{$jsonobj->au_mfek}',maxgugg='{$jsonobj->au_mgugg}',maxfelhuz='{$jsonobj->au_mfelh}',".
+                    "magassag='{$jsonobj->au_magas}',".
+                    "androidId='{$jsonobj->au_Au_id}', avatar='{$jsonobj->avatar}' WHERE email = '{$felh}'";
+            } else {
+                $sql = "UPDATE felhasznalo SET ".
+                    "orszag='{$jsonobj->au_orszag}',".
+                    "megye='{$jsonobj->au_megye}',varos='{$jsonobj->au_varos}',cim='{$jsonobj->au_cim}',iranyitoszam='{$jsonobj->au_irsz}',".
+                    "suly='{$jsonobj->au_suly}',maxfek='{$jsonobj->au_mfek}',maxgugg='{$jsonobj->au_mgugg}',maxfelhuz='{$jsonobj->au_mfelh}',".
+                    "magassag='{$jsonobj->au_magas}', au_loc_lat='{$jsonobj->au_lat}', au_loc_long='{$jsonobj->au_long}', ".
+                    "au_loc_alt='{$jsonobj->au_alt}', androidId='{$jsonobj->au_Au_id}', avatar='{$jsonobj->avatar}' WHERE email = '{$felh}'";
+            }
+
+            
+
+            if($this->mysqli->query($sql)) {
+                $this->eredmenyvissza['AU_updated'] = "Sikeres a felhasználói adatok frissítése";
+                return true;
+            } else {
+                $this->hibauzenet['AU_falseupdate'] = "Sikertelen frissítés: ".$this->mysqli->error;
+                return false;
+            }
+
+            return false;
+        }
+
+        private function chechUserPass($my_sql, $useremail, $password) {
+            $biztFelh = $my_sql->real_escape_string($useremail);
+            $biztJelszo = $my_sql->real_escape_string($password);
+
+            $sql = "SELECT jelszo FROM felhasznalo WHERE email = '{$biztFelh}'";
+            $eredmeny = $my_sql->query($sql);
+            if(!$eredmeny) {
+                $this->hibauzenet['USER_PASS_HIBA'] = "Lekérdezés hiba: ".$my_sql->error;
+                error_log("Lekérdezés hiba: ".$my_sql->error);
+                return false;
+            }
+
+            $sor = $eredmeny->fetch_assoc();
+            $dbjelszo = $sor['jelszo'];
+
+            if(!password_verify($biztJelszo, $dbjelszo)) {
+                $this->hibauzenet['USER_PASS_NOTEQ'] = "Nem egyezik a jelszó";
+                return false;
+            }
+
+            return true;
+        }
     }
+?>

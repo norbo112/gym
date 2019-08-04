@@ -143,6 +143,25 @@
                 }
             }
             break;
+        case "USERMENT" :
+            if(isset($_POST['user']) && $_POST['user'] != "") {
+                $json = json_decode($_POST['user']);
+                if($usermanageclass->editUser($json)) {
+                    $adat = $usermanageclass->getEredmenyVissza();
+                } else {
+                    $adat = $usermanageclass->getHibaUzenet();
+                }
+            }
+            break;
+        case "MARKERS" :
+            if(isset($_POST['user']) && $_POST['user'] != "") {
+                if($naploclass->getLocationListFromUsers($_POST['user'])) {
+                    $adat = $naploclass->getAdatokVissza();
+                } else {
+                    $adat = $naploclass->getHibaUzenet();
+                }
+            }
+            break;
         default :
             $adat['KERESHIBA'] = "Nem érkezzet adat. ".$keres;
             break;
