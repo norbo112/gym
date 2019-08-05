@@ -1,0 +1,20 @@
+body {}
+
+.jumbotron {
+    background-color: rgb(0, 162, 255);
+    color: black;
+}
+
+.container {
+    background-color: white;
+}
+
+.container [class^=col-] {
+    color: black;
+    border-radius: 15px;
+}
+
+.container.shadow_article {
+    box-shadow: 2px 2px 5px 2px inset #eff158;
+    padding: 20px;
+}

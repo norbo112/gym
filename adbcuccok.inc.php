@@ -1,10 +1,8 @@
 <?php
-    define("ADBUSER","phpuser");
+    define("ADBUSER","edzesnap_phpuser"); //weben lávő user
     define("ADBPASS","kalitka15N");
     define("ADBSERVER","localhost");
-    define("ADBDB","edzesnaplo");
-
-    ini_set("error_log","C:\Users\igloi\Documents\gym2logs\errs.log");
+    define("ADBDB","edzesnap_edzesnaplo");
 
     function checkUser($felhasznalo) {
         $kapcs = new mysqli(ADBSERVER,ADBUSER,ADBPASS,ADBDB);
