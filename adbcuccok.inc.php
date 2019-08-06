@@ -1,8 +1,10 @@
 <?php
-    define("ADBUSER","edzesnap_phpuser"); //weben lávő user
+    //define("ADBUSER","edzesnap_phpuser"); //weben lávő user
+    define("ADBUSER","phpuser"); 
     define("ADBPASS","kalitka15N");
     define("ADBSERVER","localhost");
-    define("ADBDB","edzesnap_edzesnaplo");
+    //define("ADBDB","edzesnap_edzesnaplo");
+    define("ADBDB","edzesnaplo");
 
     function checkUser($felhasznalo) {
         $kapcs = new mysqli(ADBSERVER,ADBUSER,ADBPASS,ADBDB);

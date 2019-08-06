@@ -15,6 +15,9 @@ body {}
 }
 
 .container.shadow_article {
-    box-shadow: 2px 2px 5px 2px inset #eff158;
+    /*box-shadow: 2px 2px 5px 2px inset #589af1;*/
+    border-top: 2px solid #589af1;
+    border-bottom: 2px solid #589af1;
     padding: 20px;
+    margin-bottom: 20px;
 }

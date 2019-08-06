@@ -175,9 +175,28 @@ class NaploLista
             }
             while($tomb = $eredmeny->fetch_assoc()) {
                 $this->adatokvissza["mentesidatum"][] = $tomb["mentesidatum"];
+                $this->adatokvissza["mentesi_datum_osszsuly"][] = 
+                    $this->getAllOsszsuly($felhasznalo, $tomb["mentesidatum"]);
             }
         }
         return true;
+    }
+
+    private function getAllOsszsuly($felhasznalo, $mentesi) {
+        $adat = 0;
+
+        $sql = "SELECT suly, ism FROM sorozat WHERE felhasznalo = '{$felhasznalo}' AND ".
+            "mentesidatum = '{$mentesi}'";
+
+        if(!($eredmeny = $this->mysql->query($sql))) {
+            error_log("Probléma a lekérdezésben: ".$this->mysql->error);
+        } else {
+            while($e = $eredmeny->fetch_assoc()) {
+                $adat += $e["suly"] * $e["ism"];
+            }
+        }
+
+        return $adat;
     }
 
     //diagram adatok, az adott mentésben szereplő gyakorlatról
