@@ -11,43 +11,66 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="home.css" />
+    <script src="main.js"></script>
 </head>
 
 <body>
-
     <div class="jumbotron">
-        <div class="container">
+        <div class="container-fluid text-center">
             <h1>Edzésnapló</h1>
             <p>Üdvözöllek az edzésnapló android alkalmazás weboldalán!</p>
-
         </div>
     </div>
 
+    <div class="container-fluid bg-1 text-center">
+        <img class="img-circle" src="under-construction.png" alt="under-construction" width="250px" height="250px">
+        <h4>Fejlesztés alatt</h4>
+        <p>Elérhetővé fogom tenni az edzésnapló android alkalmazásom. Itt is lesz lehetőség kezelni a naplókat amelyeket az alkalmazással készítettél.
+        </p>
+    </div>
 
-    <div class="container shadow_article">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="under-construction.png" alt="Image" width="250px" height="250px">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Fejlesztés alatt</h4>
-                    <p>Elérhetővé fogom tenni az edzésnapló android alkalmazásom. Itt is lesz lehetőség kezelni a naplókat amelyeket az alkalmazással készítettél.
-                    </p>
+    <div class="container-fluid bg-2 text-center">
+        <h4>Edzésnapló alkalmazás</h4>
+        <h5>Útmutató</h5>
+        <p>Itt néhány fontosabb információ az alkalmazásról, használatáról és funkcióiról</p>
+
+        <a class="btn btn-default" href="android/gym2.apk" role="button">Mobilalkalmazás letöltése</a>
+
+        <p>Jelenleg, ha nem regisztrálsz akkor csak az egyik test felhasználó edzései fog megjelenni</p>
+        <p>Alkalmazásbeli regisztráció után már a saját adataid és edzéseid lesznek láthatók</p>
+    </div>
+
+
+    <div class="container-fluid bg-3 text-center">
+        <h4>Bejelentkezés</h4>
+        <div class="container" id="bejelentkezoform">
+            <form action="login.php" method="POST" role="form" class="form-horizontal">
+                <legend style="color: white;">Belépő adatok</legend>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="login_name">Email cím: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="login_name" placeholder="Email cím">
+                    </div>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="login_pass">Jelszó: </label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="login_pass">
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <!-- <img id="cpimg" src="nwcap/nwctest.php?R=138&G=212&B=255" alt="captch"> -->
+                    <img id="cpimg" src="nwcap/nwctest.php?R=220&G=250&B=255" alt="captch">
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Belép</button>
+                    <button type="button" class="btn btn-primary">Regisztrál</button>
+                </div>
+            </form>
         </div>
-
-
     </div>
 
-    <div class="container shadow_article">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4>Edzésnapló alkalmazás</h4>
-            <h5>Útmutató</h5>
-            <p>Itt néhány fontosabb információ az alkalmazásról, használatáról és funkcióiról</p>
-        </div>
-    </div>
 
 </body>
 
